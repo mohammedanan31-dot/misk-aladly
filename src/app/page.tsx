@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { contact, faqs, formatPrice, genderLabel, perfumes, points, shipping, whatsappLink } from "@/data/site";
-import { Hero } from "@/components/hero";
+import MiskDiveHero from "@/components/misk-dive-hero";
 import { Stage } from "@/components/stage";
 import { OrderButton } from "@/components/order-button";
 import { RevealController } from "@/components/reveal";
@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <main>
       <RevealController />
-      <Hero />
+      <MiskDiveHero />
 
       {/* ---------- Names rail ---------- */}
       <div className="overflow-hidden border-y border-gold/15 bg-night py-6" aria-hidden="true">

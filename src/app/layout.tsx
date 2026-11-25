@@ -1,13 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Amiri, Cormorant_Garamond, Tajawal } from "next/font/google";
+import { Cormorant_Garamond, Lateef, Markazi_Text } from "next/font/google";
 import { brand } from "@/data/site";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 import { WhatsAppFloat } from "@/components/whatsapp-float";
 import "./globals.css";
 
-const sans = Tajawal({ subsets: ["arabic", "latin"], weight: ["300", "400", "500", "700"], variable: "--font-tajawal" });
-const display = Amiri({ subsets: ["arabic", "latin"], weight: ["400", "700"], variable: "--font-amiri" });
+// Free stand-ins close to the brand faces: Lateef ≈ Felfel (display), Markazi Text ≈ 29LT Zarid Serif (text)
+const sans = Markazi_Text({ subsets: ["arabic", "latin"], weight: ["400", "500", "600", "700"], variable: "--font-text" });
+const display = Lateef({ subsets: ["arabic", "latin"], weight: ["400", "700"], variable: "--font-headline" });
 const latin = Cormorant_Garamond({
   subsets: ["latin"],
   weight: ["400", "500", "600"],

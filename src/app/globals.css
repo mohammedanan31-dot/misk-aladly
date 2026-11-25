@@ -9,8 +9,8 @@
   --color-gold-soft: #e3c78e;
   --color-champagne: #f2e4d0;
 
-  --font-sans: var(--font-tajawal), system-ui, sans-serif;
-  --font-display: var(--font-amiri), serif;
+  --font-sans: var(--font-text), system-ui, sans-serif;
+  --font-display: var(--font-headline), serif;
   --font-latin: var(--font-cormorant), "Times New Roman", serif;
 
   --ease-silk: cubic-bezier(0.32, 0.72, 0, 1);
