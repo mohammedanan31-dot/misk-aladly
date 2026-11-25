@@ -4,6 +4,8 @@ import { brand } from "@/data/site";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 import { WhatsAppFloat } from "@/components/whatsapp-float";
+import { FluidBackground } from "@/components/fluid-bg";
+import { MistCursor } from "@/components/mist-cursor";
 import "./globals.css";
 
 // Free stand-ins close to the brand faces: Lateef ≈ Felfel (display), Markazi Text ≈ 29LT Zarid Serif (text)
@@ -40,6 +42,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ar" dir="rtl" className={`${sans.variable} ${display.variable} ${latin.variable}`}>
       <body>
+        <FluidBackground />
+        <MistCursor />
         <Nav />
         {children}
         <Footer />

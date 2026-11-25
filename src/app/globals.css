@@ -23,7 +23,7 @@ html {
 }
 
 body {
-  background: var(--color-night);
+  background: transparent;
   color: var(--color-champagne);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -295,4 +295,12 @@ details[open] .faq-plus { transform: rotate(45deg); }
   .reveal { opacity: 1; transform: none; filter: none; transition: none; }
   .menu-link { transition: none; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+
+/* Fallback when WebGL is unavailable */
+.fluid-bg[data-fallback="true"] {
+  background:
+    radial-gradient(60% 50% at 70% 30%, rgba(143, 41, 72, 0.55), transparent 70%),
+    radial-gradient(50% 40% at 20% 80%, rgba(198, 161, 91, 0.18), transparent 70%),
+    #1c0a10;
 }

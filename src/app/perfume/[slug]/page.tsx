@@ -30,7 +30,7 @@ export default async function PerfumePage({ params }: Props) {
   const others = perfumes.filter((p) => p !== perfume);
 
   return (
-    <main className="relative bg-night">
+    <main className="relative">
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-[120dvh] opacity-60 blur-3xl"
         style={{ background: `radial-gradient(50% 50% at 70% 40%, ${perfume.glow}, transparent 70%)` }}

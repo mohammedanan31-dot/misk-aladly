@@ -17,7 +17,7 @@ export default function Home() {
       <MiskDiveHero />
 
       {/* ---------- Names rail ---------- */}
-      <div className="overflow-hidden border-y border-gold/15 bg-night py-6" aria-hidden="true">
+      <div className="overflow-hidden border-y border-gold/15 bg-night/35 py-6" aria-hidden="true">
         <div className="marquee-track flex w-max items-center gap-12 whitespace-nowrap font-latin text-5xl sm:text-7xl" dir="ltr">
           {[...perfumes, ...perfumes, ...perfumes, ...perfumes].map((p, i) => (
             <span key={i} className="flex items-center gap-12">
@@ -29,7 +29,7 @@ export default function Home() {
       </div>
 
       {/* ---------- Manifesto ---------- */}
-      <section id="story" className="relative overflow-hidden bg-night py-28 sm:py-40">
+      <section id="story" className="relative overflow-hidden py-28 sm:py-40">
         <div className="mx-auto grid max-w-7xl items-center gap-16 px-5 sm:px-10 lg:grid-cols-[1.25fr_1fr]">
           <div>
             <span className="eyebrow reveal">حكايتنا</span>
@@ -59,7 +59,7 @@ export default function Home() {
       </section>
 
       {/* ---------- Collection: four chapters ---------- */}
-      <section id="collection" className="relative bg-night pb-10">
+      <section id="collection" className="relative pb-10">
         <div className="mx-auto max-w-7xl px-5 pt-10 sm:px-10">
           <div className="reveal flex flex-col items-start justify-between gap-6 border-b border-gold/15 pb-10 sm:flex-row sm:items-end">
             <div>
@@ -147,7 +147,7 @@ export default function Home() {
       </section>
 
       {/* ---------- Gifting, points, shipping (bento) ---------- */}
-      <section id="points" className="bg-night py-28 sm:py-36">
+      <section id="points" className="py-28 sm:py-36">
         <div className="mx-auto max-w-7xl px-5 sm:px-10">
           <div className="reveal max-w-2xl">
             <span className="eyebrow">نقاط مسك العدلي</span>
@@ -218,7 +218,7 @@ export default function Home() {
       </section>
 
       {/* ---------- FAQ ---------- */}
-      <section id="faq" className="bg-night pb-28 sm:pb-36">
+      <section id="faq" className="pb-28 sm:pb-36">
         <div className="mx-auto grid max-w-7xl gap-14 px-5 sm:px-10 lg:grid-cols-[1fr_1.4fr]">
           <div className="reveal">
             <span className="eyebrow">قبل أن تختار</span>

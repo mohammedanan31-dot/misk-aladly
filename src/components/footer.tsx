@@ -4,7 +4,7 @@ import { brand, contact, perfumes, whatsappLink } from "@/data/site";
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-gold/15 bg-night">
+    <footer className="relative border-t border-gold/15 bg-night/40 backdrop-blur-[2px]">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-8 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <Image src="/brand/logo.webp" alt="مسك العدلي" width={491} height={439} className="h-24 w-auto" />
