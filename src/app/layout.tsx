@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Amiri, Cormorant_Garamond, Tajawal } from "next/font/google";
 import { brand } from "@/data/site";
-import { Header } from "@/components/header";
+import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 import { WhatsAppFloat } from "@/components/whatsapp-float";
 import "./globals.css";
@@ -32,14 +32,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2A1018",
+  themeColor: "#14070C",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ar" dir="rtl" className={`${sans.variable} ${display.variable} ${latin.variable}`}>
       <body>
-        <Header />
+        <Nav />
         {children}
         <Footer />
         <WhatsAppFloat />

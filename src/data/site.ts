@@ -46,6 +46,11 @@ export type Perfume = {
   /** لون الضوء والأجواء خلف القارورة */
   light: string;
   glow: string;
+  /** المشهد المولّد خلف القارورة */
+  scene: string;
+  /** مكان سطح المنصة بالمشهد: x و top بالنسبة المئوية، h ارتفاع القارورة */
+  stage: { x: number; top: number; h: number };
+  mood: string;
 };
 
 export const perfumes: Perfume[] = [
@@ -62,6 +67,9 @@ export const perfumes: Perfume[] = [
     size: 100,
     price: 1200,
     image: "/perfumes/velvet-kiss.webp",
+    scene: "/scenes/velvet-kiss.webp",
+    stage: { x: 50, top: 73, h: 50 },
+    mood: "حلو · دافئ · جذّاب",
     light: "#E7B98A",
     glow: "#8F2948",
   },
@@ -77,6 +85,9 @@ export const perfumes: Perfume[] = [
     size: 100,
     price: 900,
     image: "/perfumes/adrenaline.webp",
+    scene: "/scenes/adrenaline.webp",
+    stage: { x: 51, top: 75, h: 52 },
+    mood: "ناعم · نظيف · أنيق",
     light: "#F2E4D0",
     glow: "#6E1734",
   },
@@ -92,6 +103,9 @@ export const perfumes: Perfume[] = [
     size: 100,
     price: 1000,
     image: "/perfumes/majestic.webp",
+    scene: "/scenes/majestic.webp",
+    stage: { x: 50, top: 77, h: 58 },
+    mood: "فخم · دافئ · غامض",
     light: "#D9A35B",
     glow: "#5A1A12",
   },
@@ -108,6 +122,9 @@ export const perfumes: Perfume[] = [
     size: 100,
     price: 900,
     image: "/perfumes/icon.webp",
+    scene: "/scenes/icon.webp",
+    stage: { x: 48, top: 69, h: 46 },
+    mood: "منعش · مشرق · كلاسيكي",
     light: "#F0C98E",
     glow: "#7A3A1E",
   },

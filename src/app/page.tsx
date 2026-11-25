@@ -1,116 +1,56 @@
 import Image from "next/image";
-import { brand, contact, faqs, perfumes, points, shipping, whatsappLink } from "@/data/site";
-import { Niche } from "@/components/niche";
-import { GoldDust } from "@/components/gold-dust";
+import Link from "next/link";
+import { contact, faqs, formatPrice, genderLabel, perfumes, points, shipping, whatsappLink } from "@/data/site";
+import { Hero } from "@/components/hero";
+import { Stage } from "@/components/stage";
+import { OrderButton } from "@/components/order-button";
 import { RevealController } from "@/components/reveal";
-import { Ornament, WhatsAppIcon } from "@/components/icons";
+import { WhatsAppIcon } from "@/components/icons";
 
-const strip = [
-  "100 مل لكل عطر",
-  `شحن مجاني للطلبات فوق ${shipping.freeOver.toLocaleString("en-US")} جنيه`,
-  `التوصيل خلال ${shipping.days}`,
-  `${points.perBottle} نقطة مع كل عبوة`,
-  "شحن لجميع المحافظات",
-];
+const manifesto =
+  "في مسك العدلي نؤمن أن العطر ليس رائحة فحسب، بل حضورٌ يسبقك إلى المكان، وذكرى تبقى بعد أن ترحل. أربع تركيبات مستوردة، اخترناها بعناية لتجد بينها توقيعك.";
 
 export default function Home() {
   return (
     <main>
       <RevealController />
+      <Hero />
 
-      {/* ---------- The gallery: four lit alcoves ---------- */}
-      <section id="collection" className="stone relative overflow-hidden pt-28 sm:pt-32">
-        <GoldDust />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-8">
-          <div className="rise-in mx-auto max-w-2xl text-center">
-            <p className="font-latin text-[10px] tracking-[0.3em] text-gold/80 sm:text-xs sm:tracking-[0.5em]" dir="ltr">
-              MISK ALADLY · THE SIGNATURE COLLECTION
-            </p>
-            <h1 className="mt-5 font-display text-4xl leading-[1.5] text-champagne sm:text-6xl sm:leading-[1.4]">
-              أربعة عطور، <span className="text-gold">أربعة توقيعات</span>
-            </h1>
-            <p className="mt-4 text-champagne/65 sm:text-lg">عطران رجاليان وعطران نسائيان. اضغط على أي عطر لتكتشفه.</p>
-          </div>
-
-          <div className="mt-12 grid grid-cols-2 gap-x-5 gap-y-10 sm:gap-x-8 lg:mt-16 lg:grid-cols-4 lg:gap-x-10">
-            {perfumes.map((p, i) => (
-              <Niche key={p.slug} perfume={p} index={i} priority={i < 2} />
-            ))}
-          </div>
-        </div>
-        <div className="floor relative mt-10 h-20" />
-      </section>
-
-      {/* ---------- Info strip ---------- */}
-      <div className="overflow-hidden border-y border-gold/20 bg-burgundy/40 py-4" aria-label="معلومات الشحن">
-        <div className="marquee-track flex w-max gap-10 whitespace-nowrap text-sm text-champagne/80">
-          {[...strip, ...strip, ...strip, ...strip].map((s, i) => (
-            <span key={i} className="flex items-center gap-10">
-              {s}
-              <span className="text-gold">✦</span>
+      {/* ---------- Names rail ---------- */}
+      <div className="overflow-hidden border-y border-gold/15 bg-night py-6" aria-hidden="true">
+        <div className="marquee-track flex w-max items-center gap-12 whitespace-nowrap font-latin text-5xl sm:text-7xl" dir="ltr">
+          {[...perfumes, ...perfumes, ...perfumes, ...perfumes].map((p, i) => (
+            <span key={i} className="flex items-center gap-12">
+              <span className={i % 2 ? "text-outline" : "text-gold"}>{p.name}</span>
+              <span className="text-2xl text-gold/50">✦</span>
             </span>
           ))}
         </div>
       </div>
 
-      {/* ---------- Brand statement ---------- */}
-      <section className="relative overflow-hidden bg-night py-28 sm:py-36">
-        <div
-          className="pointer-events-none absolute left-1/2 top-1/2 size-[42rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60 blur-3xl"
-          style={{ background: "radial-gradient(closest-side, rgba(143,41,72,0.55), transparent)" }}
-        />
-        <div className="reveal relative mx-auto max-w-3xl px-4 text-center">
-          <Image src="/brand/logo.webp" alt="" width={491} height={439} className="mx-auto h-40 w-auto opacity-95 sm:h-52" />
-          <Ornament className="mx-auto mt-10 w-32 text-gold" />
-          <h2 className="mt-8 font-display text-3xl leading-[1.6] text-champagne sm:text-5xl sm:leading-[1.5]">{brand.tagline}</h2>
-          <p className="mx-auto mt-6 max-w-xl leading-8 text-champagne/65 sm:text-lg">
-            في مسك العدلي نؤمن أن العطر ليس مجرد رائحة، بل حضورٌ يسبقك وذكرى تبقى بعدك. اخترنا أربع تركيبات بعناية، لكل منها شخصيتها، لتجد بينها
-            توقيعك الخاص.
-          </p>
-        </div>
-      </section>
-
-      {/* ---------- Points program ---------- */}
-      <section id="points" className="stone relative overflow-hidden py-24 sm:py-32">
-        <GoldDust density={0.00004} />
-        <div className="relative mx-auto max-w-6xl px-4 sm:px-8">
-          <div className="reveal grid items-center gap-12 lg:grid-cols-2">
-            <div>
-              <p className="text-sm tracking-[0.3em] text-gold/80">نقاط مسك العدلي</p>
-              <h2 className="mt-4 font-display text-4xl leading-[1.5] sm:text-5xl">
-                كل عبوة <span className="text-gold">تحمل مكافأة</span>
-              </h2>
-              <p className="mt-5 max-w-md leading-8 text-champagne/65">
-                اجمع {points.perBottle} نقطة مع كل عبوة تشتريها. عند الوصول إلى {points.redeem} نقطة، تحصل على خصم {points.discount} جنيه على طلبك
-                القادم.
-              </p>
-              <ol className="mt-8 space-y-4">
-                {["اطلب أي عطر من المجموعة", `تُضاف ${points.perBottle} نقطة لرصيدك مع كل عبوة`, `استبدل ${points.redeem} نقطة بخصم ${points.discount} جنيه`].map(
-                  (t, i) => (
-                    <li key={t} className="flex items-center gap-4">
-                      <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-gold/50 font-latin text-lg text-gold">
-                        {i + 1}
-                      </span>
-                      <span className="text-champagne/80">{t}</span>
-                    </li>
-                  ),
-                )}
-              </ol>
+      {/* ---------- Manifesto ---------- */}
+      <section id="story" className="relative overflow-hidden bg-night py-28 sm:py-40">
+        <div className="mx-auto grid max-w-7xl items-center gap-16 px-5 sm:px-10 lg:grid-cols-[1.25fr_1fr]">
+          <div>
+            <span className="eyebrow reveal">حكايتنا</span>
+            <p className="mt-8 font-display text-3xl leading-[1.75] text-champagne sm:text-5xl sm:leading-[1.65]">
+              {manifesto.split(" ").map((w, i) => (
+                <span key={i} className="scrub-word">
+                  {w}{" "}
+                </span>
+              ))}
+            </p>
+            <div className="reveal mt-12 flex items-center gap-5">
+              <Image src="/brand/logo.webp" alt="مسك العدلي" width={491} height={439} className="h-20 w-auto" />
+              <div className="gold-rule h-px flex-1" />
             </div>
-
-            <div className="grid grid-cols-2 gap-4 sm:gap-6">
-              <div className="rounded-[2rem] border border-gold/25 bg-espresso/70 p-6 text-center shadow-2xl backdrop-blur sm:p-10">
-                <p className="font-latin text-6xl text-gold sm:text-7xl">{points.perBottle}</p>
-                <p className="mt-3 text-sm text-champagne/70">نقطة مع كل عبوة</p>
-              </div>
-              <div className="rounded-[2rem] border border-gold/25 bg-burgundy/50 p-6 text-center shadow-2xl backdrop-blur sm:p-10">
-                <p className="font-latin text-6xl text-gold sm:text-7xl">{points.redeem}</p>
-                <p className="mt-3 text-sm text-champagne/70">نقطة = خصم {points.discount} جنيه</p>
-              </div>
-              <div className="col-span-2 rounded-[2rem] border border-gold/25 bg-espresso/70 p-6 text-center backdrop-blur">
-                <p className="text-champagne/80">
-                  مثال: اشترِ <span className="text-gold-soft">4 عبوات</span> واحصل على خصم <span className="text-gold-soft">{points.discount} جنيه</span> على
-                  طلبك التالي.
+          </div>
+          <div className="reveal bezel">
+            <div className="bezel-core relative aspect-[4/5]">
+              <Image src="/scenes/feather.webp" alt="ريشة طاووس ذهبية على حرير خمري" fill sizes="(min-width:1024px) 40vw, 100vw" className="parallax scale-110 object-cover object-[70%_50%]" />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-night/90 to-transparent p-6">
+                <p className="font-latin text-sm italic text-champagne/70" dir="ltr">
+                  The peacock — our mark of pride and grace.
                 </p>
               </div>
             </div>
@@ -118,68 +58,226 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------- Promises ---------- */}
-      <section className="bg-night py-20">
-        <div className="mx-auto grid max-w-6xl gap-6 px-4 sm:grid-cols-2 sm:px-8 lg:grid-cols-4">
-          {[
-            { t: "100 مل", d: "حجم واحد سخي لكل عطر" },
-            { t: "ثبات يدوم", d: "تركيبات مستوردة تدوم لساعات طويلة" },
-            { t: shipping.days, d: "شحن لجميع المحافظات" },
-            { t: `فوق ${shipping.freeOver.toLocaleString("en-US")} جنيه`, d: "الشحن مجاني" },
-          ].map((f) => (
-            <div key={f.t} className="reveal rounded-3xl border border-gold/15 bg-espresso/60 p-8 text-center">
-              <p className="font-display text-2xl text-gold">{f.t}</p>
-              <p className="mt-2 text-sm text-champagne/60">{f.d}</p>
+      {/* ---------- Collection: four chapters ---------- */}
+      <section id="collection" className="relative bg-night pb-10">
+        <div className="mx-auto max-w-7xl px-5 pt-10 sm:px-10">
+          <div className="reveal flex flex-col items-start justify-between gap-6 border-b border-gold/15 pb-10 sm:flex-row sm:items-end">
+            <div>
+              <span className="eyebrow">المجموعة</span>
+              <h2 className="mt-6 font-display text-5xl leading-[1.4] sm:text-7xl">
+                أربعة عطور، <span className="text-gold">أربعة توقيعات</span>
+              </h2>
             </div>
-          ))}
+            <p className="max-w-sm leading-8 text-champagne/60">عطران رجاليان وعطران نسائيان، بحجم 100 مل. لكل عطر مزاجه وحكايته.</p>
+          </div>
+        </div>
+
+        {perfumes.map((p, i) => {
+          const flip = i % 2 === 1;
+          return (
+            <article
+              key={p.slug}
+              id={p.slug}
+              className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 py-16 sm:px-10 sm:py-20 lg:grid-cols-2 lg:gap-20"
+            >
+              <div
+                className="pointer-events-none absolute inset-0 -z-0 opacity-50 blur-3xl"
+                style={{ background: `radial-gradient(40% 50% at ${flip ? "70%" : "30%"} 50%, ${p.glow}, transparent 70%)` }}
+              />
+              <Link href={`/perfume/${p.slug}`} className={`reveal bezel group relative block ${flip ? "lg:order-2" : ""}`} aria-label={`${p.name} — التفاصيل`}>
+                <div className="bezel-core">
+                  <Stage perfume={p} className="aspect-[56/75] transition-transform duration-[1400ms] ease-[var(--ease-silk)] group-hover:scale-[1.02]" priority={i === 0} />
+                </div>
+                <span className="absolute end-6 top-6 rounded-full bg-night/60 px-3 py-1 text-xs text-gold-soft backdrop-blur-md">
+                  {genderLabel[p.gender]}
+                </span>
+              </Link>
+
+              <div className={`reveal relative ${flip ? "lg:order-1" : ""}`}>
+                <p className="text-outline font-latin text-8xl leading-none sm:text-9xl" dir="ltr" style={{ textAlign: "right" }}>
+                  0{i + 1}
+                </p>
+                <p className="mt-6 text-sm tracking-[0.3em] text-gold/80">{p.mood}</p>
+                <h3 className="mt-3 font-latin text-6xl leading-none text-champagne sm:text-8xl" dir="ltr" style={{ textAlign: "right" }}>
+                  {p.nameParts[0]}
+                  <em className="text-gold">{p.nameParts[1]}</em>
+                </h3>
+                <p className="mt-6 font-display text-2xl text-gold-soft">{p.short}</p>
+                <p className="mt-4 max-w-md leading-8 text-champagne/70">{p.description}</p>
+
+                <div className="mt-8 flex flex-wrap gap-2">
+                  {p.notes.map((n) => (
+                    <span key={n} className="rounded-full border border-champagne/15 bg-champagne/[0.04] px-4 py-1.5 text-sm text-champagne/85">
+                      {n}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-5">
+                  <div>
+                    <p className="text-xs text-champagne/45">{p.size} مل</p>
+                    <p className="font-latin text-4xl text-gold">{formatPrice(p.price)}</p>
+                  </div>
+                  <OrderButton perfume={p} />
+                  <Link href={`/perfume/${p.slug}`} className="btn-glass rounded-full px-5 py-3 text-sm">
+                    التفاصيل
+                  </Link>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </section>
+
+      {/* ---------- Mist band ---------- */}
+      <section className="relative isolate overflow-hidden py-40 sm:py-56">
+        <Image src="/scenes/mist.webp" alt="" fill sizes="100vw" className="parallax -z-10 scale-110 object-cover" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-l from-night via-night/40 to-transparent" />
+        <div className="mx-auto max-w-7xl px-5 sm:px-10">
+          <div className="reveal max-w-xl">
+            <span className="eyebrow">ثبات يدوم</span>
+            <h2 className="mt-6 font-display text-4xl leading-[1.5] sm:text-6xl sm:leading-[1.4]">
+              رذاذٌ واحد
+              <br />
+              <span className="text-gold">يكفي ليتذكّرك الجميع</span>
+            </h2>
+            <p className="mt-6 max-w-md leading-8 text-champagne/70">تركيبات مستوردة بتركيز عالٍ، تدوم لساعات طويلة وتترك أثرًا يُلاحظ.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- Gifting, points, shipping (bento) ---------- */}
+      <section id="points" className="bg-night py-28 sm:py-36">
+        <div className="mx-auto max-w-7xl px-5 sm:px-10">
+          <div className="reveal max-w-2xl">
+            <span className="eyebrow">نقاط مسك العدلي</span>
+            <h2 className="mt-6 font-display text-5xl leading-[1.4] sm:text-6xl">
+              كل عبوة <span className="text-gold">تحمل مكافأة</span>
+            </h2>
+          </div>
+
+          <div className="mt-14 grid gap-5 md:grid-cols-6 md:grid-rows-[auto_auto]">
+            <div className="reveal bezel md:col-span-3 md:row-span-2">
+              <div className="bezel-core relative h-full min-h-[28rem]">
+                <Image src="/scenes/giftbox.webp" alt="علبة مسك العدلي الخمرية بشرائط ذهبية" fill sizes="(min-width:768px) 50vw, 100vw" className="object-cover" />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-night via-night/70 to-transparent p-8 pt-24">
+                  <p className="font-display text-3xl">جاهز للإهداء</p>
+                  <p className="mt-2 max-w-sm text-sm leading-7 text-champagne/70">كل عطر يصلك في علبته الخمرية الفاخرة بشرائط ذهبية — هدية تليق بمن تحب.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="reveal bezel md:col-span-3">
+              <div className="bezel-core flex h-full flex-col justify-between gap-10 bg-burgundy/60 p-8">
+                <div className="flex items-start justify-between">
+                  <p className="text-champagne/70">مع كل عبوة</p>
+                  <span className="eyebrow">١</span>
+                </div>
+                <p className="font-latin text-8xl leading-none text-gold">
+                  {points.perBottle}
+                  <span className="ms-3 font-sans text-2xl text-champagne">نقطة</span>
+                </p>
+              </div>
+            </div>
+
+            <div className="reveal bezel md:col-span-3">
+              <div className="bezel-core flex h-full flex-col justify-between gap-10 bg-espresso p-8">
+                <div className="flex items-start justify-between">
+                  <p className="text-champagne/70">
+                    عند {points.redeem} نقطة تحصل على
+                  </p>
+                  <span className="eyebrow">٢</span>
+                </div>
+                <p className="font-latin text-8xl leading-none text-gold">
+                  {points.discount}
+                  <span className="ms-3 font-sans text-2xl text-champagne">جنيه خصم</span>
+                </p>
+              </div>
+            </div>
+
+            <div className="reveal bezel md:col-span-2">
+              <div className="bezel-core h-full bg-espresso/70 p-8">
+                <p className="font-display text-3xl text-gold">{shipping.days}</p>
+                <p className="mt-2 text-sm text-champagne/60">توصيل لجميع المحافظات</p>
+              </div>
+            </div>
+            <div className="reveal bezel md:col-span-2">
+              <div className="bezel-core h-full bg-espresso/70 p-8">
+                <p className="font-display text-3xl text-gold">شحن مجاني</p>
+                <p className="mt-2 text-sm text-champagne/60">للطلبات فوق {shipping.freeOver.toLocaleString("en-US")} جنيه</p>
+              </div>
+            </div>
+            <div className="reveal bezel md:col-span-2">
+              <div className="bezel-core h-full bg-espresso/70 p-8">
+                <p className="font-display text-3xl text-gold">100 مل</p>
+                <p className="mt-2 text-sm text-champagne/60">حجم سخي لكل عطر</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ---------- FAQ ---------- */}
-      <section id="faq" className="bg-night pb-24 pt-8 sm:pb-32">
-        <div className="mx-auto max-w-3xl px-4 sm:px-8">
-          <div className="reveal text-center">
-            <p className="text-sm tracking-[0.3em] text-gold/80">قبل أن تختار</p>
-            <h2 className="mt-4 font-display text-4xl sm:text-5xl">أسئلة قد تهمّك</h2>
+      <section id="faq" className="bg-night pb-28 sm:pb-36">
+        <div className="mx-auto grid max-w-7xl gap-14 px-5 sm:px-10 lg:grid-cols-[1fr_1.4fr]">
+          <div className="reveal">
+            <span className="eyebrow">قبل أن تختار</span>
+            <h2 className="mt-6 font-display text-5xl leading-[1.4]">أسئلة قد تهمّك</h2>
+            <p className="mt-5 max-w-sm leading-8 text-champagne/60">لم تجد إجابتك؟ راسلنا على واتساب وسنرد عليك سريعًا.</p>
+            <a
+              href={whatsappLink("مرحبًا مسك العدلي، عندي سؤال 🌹")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-glass group mt-8 inline-flex items-center gap-3 rounded-full py-2 pe-2 ps-5"
+            >
+              <span dir="ltr">{contact.whatsappDisplay}</span>
+              <span className="btn-icon flex size-9 items-center justify-center rounded-full bg-gold/15 text-gold-soft">
+                <WhatsAppIcon className="size-4" />
+              </span>
+            </a>
           </div>
-          <div className="mt-12 space-y-3">
+          <div className="space-y-3">
             {faqs.map((f) => (
-              <details key={f.q} className="reveal group rounded-2xl border border-gold/20 bg-espresso/60 open:bg-espresso">
-                <summary className="flex cursor-pointer items-center justify-between gap-4 px-6 py-5 text-lg">
+              <details key={f.q} className="reveal group rounded-[1.75rem] border border-champagne/10 bg-champagne/[0.03] transition-colors duration-700 open:bg-espresso">
+                <summary className="flex cursor-pointer items-center justify-between gap-4 px-7 py-6 text-lg">
                   {f.q}
-                  <span className="faq-plus text-2xl text-gold transition-transform duration-300">+</span>
+                  <span className="faq-plus flex size-9 shrink-0 items-center justify-center rounded-full border border-gold/30 text-xl text-gold transition-transform duration-700 ease-[var(--ease-silk)]">
+                    +
+                  </span>
                 </summary>
-                <p className="px-6 pb-6 leading-8 text-champagne/70">{f.a}</p>
+                <p className="px-7 pb-7 leading-8 text-champagne/70">{f.a}</p>
               </details>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ---------- Contact ---------- */}
-      <section id="contact" className="relative overflow-hidden bg-burgundy py-24 sm:py-28">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-70"
-          style={{ background: "radial-gradient(80% 120% at 50% 120%, rgba(198,161,91,0.25), transparent 60%)" }}
-        />
-        <div className="reveal relative mx-auto max-w-2xl px-4 text-center">
-          <h2 className="font-display text-4xl leading-[1.5] sm:text-5xl">
-            تحتاج مساعدة في <span className="text-gold">الاختيار؟</span>
-          </h2>
-          <p className="mt-5 leading-8 text-champagne/75">اسألنا عن النوتات والعطور والشحن، وسنساعدك تختار العطر الأقرب لذوقك.</p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href={whatsappLink("مرحبًا مسك العدلي، أحتاج مساعدة في اختيار عطر 🌹")}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-gold flex items-center gap-3 rounded-full px-8 py-4 font-bold"
-            >
-              <WhatsAppIcon className="size-5" />
-              تواصل عبر واتساب
-            </a>
-            <a href={`mailto:${contact.email}`} className="btn-ghost rounded-full px-8 py-4">
-              {contact.email}
-            </a>
+      {/* ---------- Final call ---------- */}
+      <section id="contact" className="px-3 pb-3 sm:px-5 sm:pb-5">
+        <div className="grow-in relative isolate overflow-hidden rounded-[2rem] bg-burgundy px-6 py-24 text-center sm:py-32">
+          <Image src="/scenes/hero-stage.webp" alt="" fill sizes="100vw" className="-z-10 object-cover opacity-35" />
+          <div className="absolute inset-0 -z-10 bg-gradient-to-b from-burgundy/40 via-burgundy/70 to-night/90" />
+          <div className="reveal mx-auto max-w-2xl">
+            <h2 className="font-display text-5xl leading-[1.4] sm:text-7xl">
+              اختر <span className="text-gold">توقيعك</span>
+            </h2>
+            <p className="mx-auto mt-6 max-w-md leading-8 text-champagne/75">محتار بين العطور؟ قلّنا ذوقك، ونرشّح لك الأنسب.</p>
+            <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <a
+                href={whatsappLink("مرحبًا مسك العدلي، أحتاج مساعدة في اختيار عطر 🌹")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-gold group inline-flex items-center gap-3 rounded-full py-2 pe-2 ps-7 text-lg font-bold"
+              >
+                تواصل عبر واتساب
+                <span className="btn-icon flex size-11 items-center justify-center rounded-full bg-espresso/15">
+                  <WhatsAppIcon className="size-5" />
+                </span>
+              </a>
+              <a href={`mailto:${contact.email}`} className="btn-glass rounded-full px-7 py-4">
+                {contact.email}
+              </a>
+            </div>
           </div>
         </div>
       </section>
