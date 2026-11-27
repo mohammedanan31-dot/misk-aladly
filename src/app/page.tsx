@@ -49,13 +49,28 @@ export default function Home() {
           </div>
           <div className="reveal bezel">
             <div className="bezel-core relative aspect-[4/5]">
-              <Image src="/scenes/feather.webp" alt="ريشة طاووس ذهبية على حرير خمري" fill sizes="(min-width:1024px) 40vw, 100vw" className="parallax scale-110 object-cover object-[70%_50%]" />
+              <Image src="/scenes/noir-gold.webp" alt="قارورة مسك العدلي الذهبية مع نقش الطاووس وشريطة ذهبية" fill sizes="(min-width:1024px) 40vw, 100vw" className="parallax scale-110 object-cover object-[70%_50%]" />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-night/90 to-transparent p-6">
                 <p className="font-latin text-sm italic text-champagne/70" dir="ltr">
                   The peacock — our mark of pride and grace.
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- Brand panorama ---------- */}
+      <section className="relative px-3 sm:px-5" aria-label="مسك العدلي">
+        <div className="reveal bezel">
+          <div className="bezel-core relative aspect-[9/4]">
+            <Image
+              src="/scenes/panorama.webp"
+              alt="قارورة مسك العدلي على مخمل خمري بين حروف MISK ALADLY الذهبية"
+              fill
+              sizes="100vw"
+              className="object-cover object-center"
+            />
           </div>
         </div>
       </section>
@@ -131,19 +146,52 @@ export default function Home() {
         })}
       </section>
 
-      {/* ---------- Mist band ---------- */}
-      <section className="relative isolate overflow-hidden py-40 sm:py-56">
-        <Image src="/scenes/mist.webp" alt="" fill sizes="100vw" className="parallax -z-10 scale-110 object-cover" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-l from-night via-night/40 to-transparent" />
+      {/* ---------- Golden hour lookbook ---------- */}
+      <section className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-5 sm:px-10">
-          <div className="reveal max-w-xl">
-            <span className="eyebrow">ثبات يدوم</span>
-            <h2 className="mt-6 font-display text-4xl leading-[1.5] sm:text-6xl sm:leading-[1.4]">
+          <div className="reveal flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+            <div>
+              <span className="eyebrow">ساعة ذهبية</span>
+              <h2 className="mt-6 font-display text-5xl leading-[1.4] sm:text-6xl">
+                عطرٌ <span className="text-gold">يلتقط الضوء</span>
+              </h2>
+            </div>
+            <p className="max-w-sm leading-8 text-champagne/60">زجاجٌ يلمع كالكهرمان، ونقش الطاووس يتوهّج مع آخر شعاع للشمس.</p>
+          </div>
+          <div className="mt-14 grid gap-5 sm:grid-cols-2">
+            {[
+              { src: "/scenes/sunset-dome.webp", alt: "قارورة Velvet Kiss عند الغروب", name: "Velvet Kiss", slug: "velvet-kiss" },
+              { src: "/scenes/sunset-arch.webp", alt: "قارورة Adrenaline تحت قوس عند الغروب", name: "Adrenaline", slug: "adrenaline" },
+            ].map((im, i) => (
+              <Link key={im.src} href={`/perfume/${im.slug}`} className={`reveal bezel group block ${i === 1 ? "sm:mt-20" : ""}`}>
+                <div className="bezel-core relative aspect-[4/5]">
+                  <Image src={im.src} alt={im.alt} fill sizes="(min-width:640px) 45vw, 100vw" className="object-cover transition-transform duration-[1400ms] ease-[var(--ease-silk)] group-hover:scale-[1.03]" />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-night/85 to-transparent p-6 pt-20">
+                    <p className="font-latin text-3xl text-champagne" dir="ltr" style={{ textAlign: "right" }}>
+                      {im.name}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- The touch (light band) ---------- */}
+      <section className="relative isolate overflow-hidden bg-[#d9d6d2]">
+        <div className="relative aspect-[5/4] sm:aspect-[2000/889]">
+          <Image src="/scenes/hands.webp" alt="يدٌ تقدّم قارورة مسك العدلي ويدٌ تمتد إليها" fill sizes="100vw" className="object-cover object-[52%_50%] sm:object-center" />
+        </div>
+        <div className="sm:absolute sm:inset-y-0 sm:start-0 sm:w-[40%]">
+          <div className="reveal flex h-full flex-col justify-end px-6 pb-12 pt-2 sm:px-12 sm:pb-[6%] sm:pt-0">
+            <span className="text-xs tracking-[0.3em] text-[#7a1418]">ثبات يدوم</span>
+            <h2 className="mt-4 font-display text-4xl leading-[1.45] text-[#2a0507] sm:text-5xl">
               رذاذٌ واحد
               <br />
-              <span className="text-gold">يكفي ليتذكّرك الجميع</span>
+              يكفي ليتذكّرك الجميع
             </h2>
-            <p className="mt-6 max-w-md leading-8 text-champagne/70">تركيبات مستوردة بتركيز عالٍ، تدوم لساعات طويلة وتترك أثرًا يُلاحظ.</p>
+            <p className="mt-4 max-w-sm leading-8 text-[#2a0507]/75">تركيبات مستوردة بتركيز عالٍ، تدوم لساعات طويلة وتترك أثرًا يُلاحظ.</p>
           </div>
         </div>
       </section>
@@ -161,7 +209,7 @@ export default function Home() {
           <div className="mt-14 grid gap-5 md:grid-cols-6 md:grid-rows-[auto_auto]">
             <div className="reveal bezel md:col-span-3 md:row-span-2">
               <div className="bezel-core relative h-full min-h-[28rem]">
-                <Image src="/scenes/giftbox.webp" alt="علبة مسك العدلي الخمرية بشرائط ذهبية" fill sizes="(min-width:768px) 50vw, 100vw" className="object-cover" />
+                <Image src="/scenes/giftbag.webp" alt="كيس هدايا مسك العدلي الخمري بشرائط ذهبية" fill sizes="(min-width:768px) 50vw, 100vw" className="object-cover object-[40%_40%]" />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-night via-night/70 to-transparent p-8 pt-24">
                   <p className="font-display text-3xl">جاهز للإهداء</p>
                   <p className="mt-2 max-w-sm text-sm leading-7 text-champagne/70">كل عطر يصلك في علبته الخمرية الفاخرة بشرائط ذهبية — هدية تليق بمن تحب.</p>

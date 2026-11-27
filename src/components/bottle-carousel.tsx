@@ -133,7 +133,7 @@ export function BottleCarousel() {
                   className="relative h-[24rem] overflow-hidden rounded-[2rem] border border-champagne/15 sm:h-[29rem]"
                   style={{
                     background:
-                      "linear-gradient(170deg, rgba(242,228,208,calc(0.06 + var(--lit,0) * 0.1)), rgba(110,23,52,calc(0.25 + var(--lit,0) * 0.35)) 60%, rgba(20,7,12,0.6))",
+                      "linear-gradient(170deg, rgba(242,228,208,calc(0.06 + var(--lit,0) * 0.1)), rgba(110,23,52,calc(0.25 + var(--lit,0) * 0.35)) 60%, rgba(18,3,4,0.6))",
                     boxShadow: "0 40px 80px -30px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.12)",
                   }}
                 >

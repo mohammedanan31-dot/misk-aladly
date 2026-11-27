@@ -71,7 +71,7 @@ export const perfumes: Perfume[] = [
     stage: { x: 50, top: 73, h: 50 },
     mood: "حلو · دافئ · جذّاب",
     light: "#E7B98A",
-    glow: "#8F2948",
+    glow: "#8e1a1e",
   },
   {
     slug: "adrenaline",
@@ -89,7 +89,7 @@ export const perfumes: Perfume[] = [
     stage: { x: 51, top: 75, h: 52 },
     mood: "ناعم · نظيف · أنيق",
     light: "#F2E4D0",
-    glow: "#6E1734",
+    glow: "#6b0f14",
   },
   {
     slug: "majestic",
