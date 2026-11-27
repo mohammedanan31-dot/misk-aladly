@@ -47,6 +47,19 @@ export type Perfume = {
   light: string;
   glow: string;
   mood: string;
+  /** شعار العطر من حملة مسك العدلي */
+  tagline: string;
+  /** الصورة الرئيسية للعطر (تصوير حقيقي) */
+  photo: string;
+  /** صور إضافية للمعرض في صفحة العطر */
+  gallery: string[];
+  /** أجواء العرض: ألوان الخلفية والإضاءة */
+  theme: { from: string; to: string; glow: string; ink: "light" | "dark" };
+  /**
+   * الهرم العطري — يُعرض فقط عند توفر معلومات مؤكدة من المورّد.
+   * النوتات الحالية غير مقسّمة إلى مقدمة/قلب/قاعدة، لذلك تُترك فارغة.
+   */
+  pyramid?: { top: string[]; heart: string[]; base: string[] };
 };
 
 export const perfumes: Perfume[] = [
@@ -65,7 +78,11 @@ export const perfumes: Perfume[] = [
     image: "/perfumes/velvet-kiss.webp",
     mood: "حلو · دافئ · جذّاب",
     light: "#E7B98A",
-    glow: "#8a1418",
+    glow: "#641d35",
+    tagline: "دفء يلامس الحواس",
+    photo: "/scenes/noir-gold.webp",
+    gallery: ["/perfumes/photo-velvet-kiss.webp", "/scenes/sunset-dome.webp"],
+    theme: { from: "#390E20", to: "#641D35", glow: "#8F2948", ink: "light" },
   },
   {
     slug: "adrenaline",
@@ -80,8 +97,12 @@ export const perfumes: Perfume[] = [
     price: 900,
     image: "/perfumes/adrenaline.webp",
     mood: "ناعم · نظيف · أنيق",
-    light: "#F2E4D0",
-    glow: "#550a12",
+    light: "#f3e5cc",
+    glow: "#390e20",
+    tagline: "طاقة جذّابة",
+    photo: "/scenes/sunset-arch.webp",
+    gallery: ["/perfumes/photo-adrenaline.webp"],
+    theme: { from: "#FAF5ED", to: "#F3E5CC", glow: "#D4B17B", ink: "dark" },
   },
   {
     slug: "majestic",
@@ -98,6 +119,10 @@ export const perfumes: Perfume[] = [
     mood: "فخم · دافئ · غامض",
     light: "#D9A35B",
     glow: "#5A1A12",
+    tagline: "فخامة ملكية",
+    photo: "/scenes/hands.webp",
+    gallery: ["/perfumes/photo-majestic.webp"],
+    theme: { from: "#240911", to: "#390E20", glow: "#B8742F", ink: "light" },
   },
   {
     slug: "icon",
@@ -115,8 +140,16 @@ export const perfumes: Perfume[] = [
     mood: "منعش · مشرق · كلاسيكي",
     light: "#F0C98E",
     glow: "#7A3A1E",
+    tagline: "قوة الحضور",
+    photo: "/scenes/icon-velvet.webp",
+    gallery: ["/perfumes/photo-icon.webp"],
+    theme: { from: "#2A1209", to: "#4A2614", glow: "#C5A46D", ink: "light" },
   },
 ];
+
+/** آراء العملاء — تُعرض فقط عند إضافة آراء حقيقية موثّقة هنا. */
+export type Review = { name: string; text: string; perfume?: string; city?: string };
+export const reviews: Review[] = [];
 
 export const faqs = [
   { q: "ما حجم العبوة وسعرها؟", a: "كل عطر بحجم 100 مل. الأسعار من 900 إلى 1,200 جنيه حسب العطر." },
@@ -151,4 +184,48 @@ export function orderMessage(p: Perfume, qty: number) {
 
 export function getPerfume(slug: string) {
   return perfumes.find((p) => p.slug === slug);
+}
+
+/* ---------- Shopping bag ---------- */
+
+export type BagLine = { slug: string; qty: number };
+export type Customer = { name: string; phone: string; city: string; address: string; note: string };
+
+export function bagTotals(lines: BagLine[]) {
+  let count = 0;
+  let subtotal = 0;
+  for (const l of lines) {
+    const p = getPerfume(l.slug);
+    if (!p) continue;
+    count += l.qty;
+    subtotal += p.price * l.qty;
+  }
+  return { count, subtotal, points: count * points.perBottle, freeShipping: subtotal >= shipping.freeOver };
+}
+
+/** A structured WhatsApp order: items, quantities, unit and line prices, total, points, delivery details. */
+export function bagMessage(lines: BagLine[], c: Customer) {
+  const t = bagTotals(lines);
+  const items = lines
+    .map((l) => ({ l, p: getPerfume(l.slug) }))
+    .filter((x): x is { l: BagLine; p: Perfume } => Boolean(x.p))
+    .map(({ l, p }, i) => `${i + 1}. ${p.name} (${genderLabel[p.gender]}، ${p.size} مل)\n   ${l.qty} × ${formatPrice(p.price)} = ${formatPrice(p.price * l.qty)}`);
+  const who = [
+    c.name && `الاسم: ${c.name}`,
+    c.phone && `الهاتف: ${c.phone}`,
+    c.city && `المحافظة: ${c.city}`,
+    c.address && `العنوان: ${c.address}`,
+    c.note && `ملاحظات: ${c.note}`,
+  ].filter(Boolean);
+  const summary = [
+    `عدد العبوات: ${t.count}`,
+    `الإجمالي: ${formatPrice(t.subtotal)}`,
+    t.freeShipping ? `الشحن: مجاني (الطلب فوق ${formatPrice(shipping.freeOver)})` : null,
+    `نقاط مسك العدلي المستحقة: ${t.points} نقطة`,
+  ].filter(Boolean);
+  const blocks = [["مرحبًا مسك العدلي 🌹", "أرغب بإتمام هذا الطلب:"], items, summary, who.length ? ["بيانات التوصيل:", ...who] : []];
+  return blocks
+    .filter((b) => b.length)
+    .map((b) => b.join("\n"))
+    .join("\n\n");
 }

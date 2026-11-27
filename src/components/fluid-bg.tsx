@@ -22,7 +22,7 @@ void main(){
   float d=length(p-m);
   vec2 q=p*.62-(p-m)*exp(-d*d*1.6)*.22;
   q.y+=uScroll*.18;
-  float t=uTime*.055;
+  float t=uTime*.035;
   // molten crimson: domain-warped folds that keep moving
   vec2 w=vec2(fbm(q+vec2(0.,t)), fbm(q+vec2(5.2,-t*1.3)));
   vec2 r=vec2(fbm(q+1.9*w+vec2(1.7,9.2)+t*.7), fbm(q+1.9*w+vec2(8.3,2.8)-t*.5));
@@ -30,11 +30,11 @@ void main(){
   vec3 col=mix(uBase*.6,uBase,smoothstep(.15,.65,f));
   col=mix(col,uWine,smoothstep(.32,.8,f+.4*r.x-.12)*.95);
   // ember light pooling in the folds, like light on lacquered silk
-  col=mix(col,uEmber,smoothstep(.55,.95,r.y*1.3+f*.3-.2)*.55);
+  col=mix(col,uEmber,smoothstep(.55,.95,r.y*1.3+f*.3-.2)*.3);
   // glossy reflections: soft vertical shafts that shimmer and drift
   float shaft=fbm(vec2(p.x*4.2+r.x*1.4+t*.8, p.y*.35-t*1.6));
   float glint=smoothstep(.58,.9,shaft)*(.55+.45*sin(t*7.+p.x*9.));
-  col+=mix(uEmber,uGold,.45)*glint*.32*smoothstep(-.6,.2,-p.y+.1);
+  col+=mix(uEmber,uGold,.6)*glint*.16*smoothstep(-.6,.2,-p.y+.1);
   col+=uGold*exp(-d*d*3.)*.1+uEmber*exp(-d*d*6.)*.12;
   col*=1.-dot(uv-.5,uv-.5)*.75;
   gl_FragColor=vec4(col,1.);
@@ -75,10 +75,10 @@ export function FluidBackground() {
     gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
     const U = (n: string) => gl.getUniformLocation(prog, n);
     const uRes = U("uRes"), uTime = U("uTime"), uMouse = U("uMouse"), uScroll = U("uScroll");
-    gl.uniform3fv(U("uBase"), rgb("#3a060b"));
-    gl.uniform3fv(U("uWine"), rgb("#7a0d13"));
-    gl.uniform3fv(U("uGold"), rgb("#C6A15B"));
-    gl.uniform3fv(U("uEmber"), rgb("#b8441f"));
+    gl.uniform3fv(U("uBase"), rgb("#2a0b17"));
+    gl.uniform3fv(U("uWine"), rgb("#641D35"));
+    gl.uniform3fv(U("uGold"), rgb("#C5A46D"));
+    gl.uniform3fv(U("uEmber"), rgb("#8a4a32"));
 
     // the noise is soft and the canvas is upscaled, so a third of CSS resolution is plenty
     const resize = () => {

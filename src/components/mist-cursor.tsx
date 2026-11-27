@@ -36,7 +36,7 @@ export function MistCursor() {
     const SPRITES = [
       sprite(64, [[0, "rgba(255,244,214,1)"], [0.22, "rgba(246,218,152,.75)"], [0.5, "rgba(214,170,98,.22)"], [1, "rgba(214,170,98,0)"]]),
       sprite(64, [[0, "rgba(255,255,240,1)"], [0.2, "rgba(255,236,196,.7)"], [0.55, "rgba(232,198,128,.18)"], [1, "rgba(232,198,128,0)"]]),
-      sprite(256, [[0, "rgba(250,230,190,.55)"], [0.35, "rgba(220,178,108,.28)"], [0.7, "rgba(138,20,24,.12)"], [1, "rgba(138,20,24,0)"]]),
+      sprite(256, [[0, "rgba(250,230,190,.55)"], [0.35, "rgba(220,178,108,.28)"], [0.7, "rgba(100,29,53,.12)"], [1, "rgba(100,29,53,0)"]]),
     ];
 
     let w = 0, h = 0;
@@ -173,7 +173,7 @@ export function MistCursor() {
       <div
         ref={ringRef}
         aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[46] size-9 rounded-full border border-gold-soft/70 opacity-0 shadow-[0_0_18px_rgba(198,161,91,0.45),inset_0_0_10px_rgba(198,161,91,0.25)] transition-opacity duration-500"
+        className="pointer-events-none fixed left-0 top-0 z-[46] size-9 rounded-full border border-gold-soft/70 opacity-0 shadow-[0_0_18px_rgba(197,164,109,0.45),inset_0_0_10px_rgba(197,164,109,0.25)] transition-opacity duration-500"
       />
     </>
   );

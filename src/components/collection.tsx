@@ -1,65 +1,95 @@
+import Image from "next/image";
 import Link from "next/link";
 import { formatPrice, genderLabel, perfumes } from "@/data/site";
-import { Stage } from "./stage";
-import { OrderButton } from "./order-button";
+import { AddToBag } from "./bag";
+import { ShowcaseTrack } from "./showcase-track";
 
-/** The four perfumes side by side: bottle, name, notes, price, order. */
+/**
+ * The collection as four cinematic chapters. Desktop: alternating full-width editorial spreads,
+ * each lit in the perfume's own atmosphere. Phones/tablets: a swipeable track of the same chapters.
+ */
 export function Collection() {
   return (
-    <section id="collection" className="relative scroll-mt-24 py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-10">
-        <div className="reveal flex flex-col items-start justify-between gap-6 border-b border-gold/15 pb-10 sm:flex-row sm:items-end">
+    <section id="collection" className="relative scroll-mt-16 py-24 sm:py-32" aria-labelledby="collection-title">
+      <div className="mx-auto max-w-7xl px-5 sm:px-10">
+        <div className="reveal flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
-            <span className="eyebrow">المجموعة</span>
-            <h2 className="mt-6 font-display text-5xl font-bold leading-[1.35] sm:text-7xl">
+            <p className="kicker">The Collection · 01</p>
+            <h2 id="collection-title" className="mt-6 font-display text-5xl font-bold leading-[1.35] sm:text-7xl">
               أربعة عطور، <span className="text-gold">أربع شخصيات</span>
             </h2>
           </div>
-          <p className="max-w-sm font-light leading-8 text-champagne/65">عطران رجاليان وعطران نسائيان، كلٌّ بحجم 100 مل. اختر ما يشبهك.</p>
+          <p className="max-w-sm text-lg leading-8 text-champagne/70">عطران رجاليان وعطران نسائيان، كلٌّ بحجم 100 مل. لكل عطر مزاجه وحكايته.</p>
         </div>
+        <div className="gold-line mt-10" />
+      </div>
 
-        <div className="mt-12 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
-          {perfumes.map((p, i) => (
-            <article
-              key={p.slug}
-              id={p.slug}
-              className="reveal group relative flex scroll-mt-28 flex-col overflow-hidden rounded-[1.25rem] border border-gold/15 bg-night/50 transition-colors duration-700 hover:border-gold/40"
-              style={{ transitionDelay: `${i * 80}ms` }}
-            >
-              <Link href={`/perfume/${p.slug}`} aria-label={`${p.name} — التفاصيل`} className="relative block">
-                <Stage perfume={p} priority={i < 2} className="aspect-[4/5] transition-transform duration-[1400ms] ease-[var(--ease-silk)] group-hover:scale-[1.03]" />
-                <span className="absolute start-3 top-3 rounded-full border border-champagne/15 bg-night/50 px-3 py-1 text-[11px] text-gold-soft backdrop-blur-md sm:start-4 sm:top-4">
-                  {genderLabel[p.gender]}
-                </span>
-                <span className="absolute left-3 top-3 font-latin text-xs tracking-[0.3em] text-champagne/45 sm:left-4 sm:top-4" dir="ltr">
-                  0{i + 1}
-                </span>
-              </Link>
+      <div className="mt-12 lg:mt-20">
+        <ShowcaseTrack names={perfumes.map((p) => p.name)}>
+          {perfumes.map((p, i) => {
+            const flip = i % 2 === 1;
+            return (
+              <article
+                key={p.slug}
+                id={p.slug}
+                data-ink={p.theme.ink}
+                aria-label={`${p.name} — ${genderLabel[p.gender]}`}
+                className="chapter relative w-[86vw] max-w-[26rem] shrink-0 snap-center overflow-hidden sm:w-[60vw] lg:w-auto lg:max-w-none lg:scroll-mt-20"
+                style={{ background: `radial-gradient(55% 60% at ${flip ? "28%" : "72%"} 45%, ${p.theme.glow}55, transparent 70%), linear-gradient(160deg, ${p.theme.from}, ${p.theme.to})` }}
+              >
+                <div className="mx-auto grid max-w-7xl items-center lg:min-h-[92svh] lg:grid-cols-2 lg:gap-20 lg:px-10 lg:py-24">
+                  {/* photograph */}
+                  <Link href={`/perfume/${p.slug}`} className={`chapter-photo group block ${flip ? "lg:order-2" : ""}`} aria-label={`اكتشف ${p.name}`}>
+                    <div className="mask-reveal relative aspect-[4/5] overflow-hidden lg:aspect-[4/5]">
+                      <Image src={p.photo} alt={`${p.name} — مسك العدلي`} fill sizes="(min-width:1024px) 42vw, (min-width:640px) 60vw, 86vw" className="object-cover" />
+                      <span className="absolute start-4 top-4 bg-night/55 px-3 py-1 text-sm text-champagne backdrop-blur-md">{genderLabel[p.gender]}</span>
+                    </div>
+                  </Link>
 
-              <div className="flex flex-1 flex-col border-t border-gold/10 p-4 sm:p-6">
-                <h3 className="font-latin text-[15px] uppercase leading-tight tracking-[0.06em] text-champagne sm:text-[1.6rem] sm:tracking-[0.12em]" dir="ltr" style={{ textAlign: "right" }}>
-                  {p.name}
-                </h3>
-                <p className="mt-1 text-xs text-gold-soft/80 sm:text-sm">{p.mood}</p>
-                <p className="mt-3 hidden text-sm font-light leading-7 text-champagne/65 sm:block">{p.short}</p>
-                <p className="mt-3 text-xs leading-6 text-champagne/55 sm:text-[13px]">{p.notes.join(" · ")}</p>
+                  {/* words */}
+                  <div className={`p-6 sm:p-8 lg:p-0 ${flip ? "lg:order-1" : ""}`}>
+                    <div className="reveal">
+                      <p className="flex items-center gap-4 font-latin text-sm tracking-[0.4em] text-[var(--accent)]" dir="ltr" style={{ justifyContent: "flex-end" }}>
+                        <span>0{i + 1} / 04</span>
+                      </p>
+                      <h3 className="mt-4 font-latin text-[2.15rem] uppercase leading-none tracking-[0.04em] min-[400px]:text-[2.5rem] sm:text-6xl lg:text-[5.5rem] lg:tracking-[0.06em]" dir="ltr" style={{ textAlign: "right" }}>
+                        {p.nameParts[0]}
+                        <em className="font-normal italic text-[var(--accent)]">{p.nameParts[1]}</em>
+                      </h3>
+                      <p className="mt-5 font-display text-2xl font-bold text-[var(--accent)] sm:text-3xl">{p.tagline}</p>
+                      <div className="my-6 h-px w-24 bg-[var(--accent)] opacity-50" />
+                      <p className="text-lg leading-8 opacity-85 lg:max-w-md lg:text-xl lg:leading-9">{p.description}</p>
 
-                <div className="mt-auto pt-5">
-                  <div className="flex items-baseline justify-between gap-2">
-                    <p className="whitespace-nowrap font-latin text-lg text-gold sm:text-3xl">{formatPrice(p.price)}</p>
-                    <p className="hidden text-[11px] text-champagne/45 sm:block">{p.size} مل</p>
-                  </div>
-                  <div className="mt-4 flex flex-col gap-2 xl:flex-row">
-                    <OrderButton perfume={p} label="اطلب" className="w-full justify-between text-sm xl:flex-1" />
-                    <Link href={`/perfume/${p.slug}`} className="btn-glass rounded-full px-5 py-3 text-center text-sm">
-                      التفاصيل
-                    </Link>
+                      <dl className="mt-7 grid grid-cols-2 gap-x-6 gap-y-4 border-y border-[var(--line)] py-5 text-base">
+                        <div>
+                          <dt className="text-sm opacity-60">الشخصية</dt>
+                          <dd className="mt-1">{p.mood}</dd>
+                        </div>
+                        <div>
+                          <dt className="text-sm opacity-60">النوتات</dt>
+                          <dd className="mt-1">{p.notes.join(" · ")}</dd>
+                        </div>
+                      </dl>
+
+                      <div className="mt-7 flex flex-wrap items-end justify-between gap-4">
+                        <p>
+                          <span className="block text-sm opacity-60">{p.size} مل</span>
+                          <span className="font-latin text-3xl sm:text-4xl">{formatPrice(p.price)}</span>
+                        </p>
+                      </div>
+                      <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                        <AddToBag slug={p.slug} className="sm:flex-1 lg:flex-none" />
+                        <Link href={`/perfume/${p.slug}`} className="btn-ghost magnetic sm:flex-1 lg:flex-none">
+                          اكتشف العطر
+                        </Link>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </article>
-          ))}
-        </div>
+              </article>
+            );
+          })}
+        </ShowcaseTrack>
       </div>
     </section>
   );
