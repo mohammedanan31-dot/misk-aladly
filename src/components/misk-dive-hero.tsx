@@ -140,7 +140,7 @@ export default function MiskDiveHero({
   junction = 3,
   height = "100svh",
   screens = 6,
-  autoPlay = true,
+  autoPlay = false,
   autoPlayDuration = 18000,
 }: {
   brand?: string; word?: [string, string]; junction?: number; height?: string; screens?: number; autoPlay?: boolean; autoPlayDuration?: number
@@ -206,13 +206,13 @@ export default function MiskDiveHero({
     const dockCx = W / 2
     const navH = parseFloat(getComputedStyle(root).getPropertyValue("--mdh-nav")) || DOCK_Y, px = (v: number) => v.toFixed(2) + "px"
     const place = (el: HTMLElement | null, x: number, y: number, w: number, h: number, extra = "") => { if (!el) return; el.style.transform = `translate3d(${px(x)},${px(y)},0)${extra}`; el.style.width = px(w); el.style.height = px(h) }
-    let lastActive = -1
+    let lastActive = -1, lastWallFilter = "", lastFog = ""
     const render = (p: number, away: number) => {
       const cam = camAt(p, keys, word1X, word3X), z = cam.z, cx = cam.x * W, foot = cam.by * H, wallW = WALL_W * s0 * z, wallH = WALL_H * s0 * z
       let wl = cx - .5 * wallW, wt = foot - FOOT * wallH; wl = Math.min(0, Math.max(W - wallW, wl)); wt = Math.min(0, Math.max(H - wallH, wt))
       place(dryRef.current, wl, wt, wallW, wallH); place(wetRef.current, wl, wt, wallW, wallH); place(shimRef.current, wl, wt, wallW, wallH)
-      const dof = mix(0, 2.2, clamp01((z - 1) / .6)), wallFilter = dof > .05 ? `blur(${dof.toFixed(2)}px)` : "none"
-      if (wetRef.current) wetRef.current.style.filter = wallFilter; if (dryRef.current) dryRef.current.style.filter = wallFilter
+      const dof = Math.round(mix(0, 2.2, clamp01((z - 1) / .6)) * 2) / 2, wallFilter = dof > 0 ? `blur(${dof}px)` : "none"
+      if (wallFilter !== lastWallFilter) { lastWallFilter = wallFilter; if (wetRef.current) wetRef.current.style.filter = wallFilter; if (dryRef.current) dryRef.current.style.filter = wallFilter }
       // the golden light rises up the wall
       const wt01 = still ? 1 : easeInOut(span(p, T.water)), lineY = mix(H + 4, -.06 * H, wt01)
       if (wetLayerRef.current) wetLayerRef.current.style.clipPath = `inset(${px(Math.max(0, lineY))} 0 0 0)`
@@ -240,11 +240,11 @@ export default function MiskDiveHero({
       for (let i = 0; i < spans.length; i++) {
         const s = spans[i]; let o = wIn, blur = (1 - wIn) * 22, ty = 0
         if (i < pre) { o *= 1 - pOut; blur += pOut * 26; ty = -pOut * fs * .12 } else { const k = letters.length - 1 - i, t = clamp01((outT - k * .045) / .62), e = easeInOut(t); ty = -e * H * (.2 + .03 * Math.sin(i * 1.7)); blur += e * 20; o *= 1 - clamp01((t - .35) / .65) }
-        s.style.opacity = o.toFixed(3); s.style.filter = blur > .05 ? `blur(${blur.toFixed(2)}px)` : "none"; s.style.transform = ty !== 0 ? `translate3d(0,${px(ty)},0)` : "none"; s.style.visibility = o < .002 ? "hidden" : "visible"
+        s.style.opacity = o.toFixed(3); s.style.filter = blur > .5 ? `blur(${Math.round(blur)}px)` : "none"; s.style.transform = ty !== 0 ? `translate3d(0,${px(ty)},0)` : "none"; s.style.visibility = o < .002 ? "hidden" : "visible"
       }
       // mist clears from the glass
       const f = still ? 1 : easeInOut(span(p, T.fog))
-      if (fogRef.current) { const fo = 1 - f, b = mix(16, 4, f), bf = `blur(${b.toFixed(1)}px) saturate(.9)`; fogRef.current.style.opacity = fo.toFixed(3); fogRef.current.style.backdropFilter = bf; (fogRef.current.style as unknown as Record<string, string>).webkitBackdropFilter = bf; fogRef.current.style.visibility = fo < .002 ? "hidden" : "visible" }
+      if (fogRef.current) { const fo = 1 - f, b = Math.round(mix(16, 4, f)), bf = `blur(${b}px) saturate(.9)`; fogRef.current.style.opacity = fo.toFixed(3); if (bf !== lastFog && fo > .002) { lastFog = bf; fogRef.current.style.backdropFilter = bf; (fogRef.current.style as unknown as Record<string, string>).webkitBackdropFilter = bf } fogRef.current.style.visibility = fo < .002 ? "hidden" : "visible" }
       if (inkRef.current) { inkRef.current.style.opacity = (1 - f).toFixed(3); inkRef.current.style.visibility = f > .998 ? "hidden" : "visible" }
       let shown = 0; const io = still ? 0 : 1 - easeInOut(span(p, T.introOut))
       if (introRef.current) { introRef.current.style.opacity = io.toFixed(3); introRef.current.style.transform = `translate3d(0,${px(-(1 - io) * 14)},0)`; introRef.current.style.filter = io < .999 ? `blur(${((1 - io) * 6).toFixed(2)}px)` : "none"; introRef.current.style.visibility = io < .002 ? "hidden" : "visible" }

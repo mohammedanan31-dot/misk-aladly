@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { contact, faqs, formatPrice, genderLabel, perfumes, points, shipping, whatsappLink } from "@/data/site";
 import MiskDiveHero from "@/components/misk-dive-hero";
+import { BottleCarousel } from "@/components/bottle-carousel";
 import { Stage } from "@/components/stage";
 import { OrderButton } from "@/components/order-button";
 import { RevealController } from "@/components/reveal";
@@ -15,6 +16,7 @@ export default function Home() {
     <main>
       <RevealController />
       <MiskDiveHero />
+      <BottleCarousel />
 
       {/* ---------- Names rail ---------- */}
       <div className="overflow-hidden border-y border-gold/15 bg-night/35 py-6" aria-hidden="true">
@@ -64,8 +66,8 @@ export default function Home() {
           <div className="reveal flex flex-col items-start justify-between gap-6 border-b border-gold/15 pb-10 sm:flex-row sm:items-end">
             <div>
               <span className="eyebrow">المجموعة</span>
-              <h2 className="mt-6 font-display text-5xl leading-[1.4] sm:text-7xl">
-                أربعة عطور، <span className="text-gold">أربعة توقيعات</span>
+              <h2 className="mt-6 font-display text-6xl leading-[1.3] sm:text-8xl">
+                لكل عطرٍ <span className="text-gold">حكاية</span>
               </h2>
             </div>
             <p className="max-w-sm leading-8 text-champagne/60">عطران رجاليان وعطران نسائيان، بحجم 100 مل. لكل عطر مزاجه وحكايته.</p>

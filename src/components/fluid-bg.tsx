@@ -21,19 +21,19 @@ void main(){
   vec2 m=(uMouse-.5)*vec2(uRes.x/uRes.y,1.);
   float d=length(p-m);
   // big, close folds; the pointer leans on the flow a little
-  vec2 q=p*.62-(p-m)*exp(-d*d*1.6)*.16;
+  vec2 q=p*.5-(p-m)*exp(-d*d*1.6)*.18;
   q.y+=uScroll*.14;
   float t=uTime*.022;
   vec2 w=vec2(fbm(q+vec2(0.,t)), fbm(q+vec2(5.2,-t*1.2)));
   vec2 r=vec2(fbm(q+1.7*w+vec2(1.7,9.2)+t*.6), fbm(q+1.7*w+vec2(8.3,2.8)-t*.4));
   float f=fbm(q+1.8*r);
-  vec3 deep=uBase*.42;
+  vec3 deep=uBase*.55;
   vec3 col=mix(deep,uBase,smoothstep(.2,.7,f));
   // wine clouds, then a warm gold light folded through them
-  col=mix(col,uWine,smoothstep(.38,.84,f+.35*r.x-.12)*.74);
-  col=mix(col,uGold,smoothstep(.48,.92,r.y*1.25+f*.35-.18)*.3);
-  col+=uGold*exp(-d*d*3.2)*.07+uWine*exp(-d*d*6.)*.10;
-  col*=1.-dot(uv-.5,uv-.5)*.75;
+  col=mix(col,uWine,smoothstep(.34,.82,f+.35*r.x-.1)*.92);
+  col=mix(col,uGold,smoothstep(.46,.9,r.y*1.25+f*.35-.16)*.42);
+  col+=uGold*exp(-d*d*3.2)*.12+uWine*exp(-d*d*6.)*.14;
+  col*=1.-dot(uv-.5,uv-.5)*.6;
   gl_FragColor=vec4(col,1.);
 }`;
 
@@ -76,9 +76,9 @@ export function FluidBackground() {
     gl.uniform3fv(U("uWine"), rgb("#8F2948"));
     gl.uniform3fv(U("uGold"), rgb("#C6A15B"));
 
-    // the noise is soft, so half resolution is plenty
+    // the noise is soft and the canvas is upscaled, so a third of CSS resolution is plenty
     const resize = () => {
-      const s = Math.min(window.devicePixelRatio || 1, 2) * 0.5;
+      const s = 0.34;
       canvas.width = Math.max(2, Math.round(innerWidth * s));
       canvas.height = Math.max(2, Math.round(innerHeight * s));
       gl.viewport(0, 0, canvas.width, canvas.height);
@@ -95,16 +95,25 @@ export function FluidBackground() {
 
     const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const t0 = performance.now();
-    let raf = 0;
+    let raf = 0, lastDraw = 0;
+    const covered = () => {
+      // the scroll hero paints its own opaque scene; no need to draw underneath it
+      const st = document.querySelector(".mdh-stage");
+      if (!st) return false;
+      const r = st.getBoundingClientRect();
+      return r.top <= 0 && r.bottom >= innerHeight;
+    };
     const frame = (now: number) => {
-      mouse.x += (target.x - mouse.x) * 0.02;
-      mouse.y += (target.y - mouse.y) * 0.02;
+      raf = document.hidden ? 0 : requestAnimationFrame(frame);
+      if (now - lastDraw < 33 || covered()) return; // ~30 fps is plenty for a slow fluid
+      lastDraw = now;
+      mouse.x += (target.x - mouse.x) * 0.04;
+      mouse.y += (target.y - mouse.y) * 0.04;
       gl.uniform2f(uRes, canvas.width, canvas.height);
       gl.uniform1f(uTime, still ? 40 : (now - t0) / 1000 + 40);
       gl.uniform2f(uMouse, mouse.x, mouse.y);
       gl.uniform1f(uScroll, scrollY / Math.max(innerHeight, 1));
       gl.drawArrays(gl.TRIANGLES, 0, 3);
-      raf = document.hidden ? 0 : requestAnimationFrame(frame);
     };
     const onVis = () => {
       if (!document.hidden && !raf) raf = requestAnimationFrame(frame);
