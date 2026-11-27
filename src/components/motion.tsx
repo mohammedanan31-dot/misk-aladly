@@ -97,7 +97,7 @@ export function Motion() {
       },
       { rootMargin: "0px 0px -8% 0px" },
     );
-    const scan = () => document.querySelectorAll(".reveal:not(.is-visible), .mask-reveal:not(.is-visible), .gold-line:not(.is-visible)").forEach((el) => io.observe(el));
+    const scan = () => document.querySelectorAll(".reveal:not(.is-visible), .mask-reveal:not(.is-visible), .gold-line:not(.is-visible), .split:not(.is-visible)").forEach((el) => io.observe(el));
     scan();
     const t = setTimeout(scan, 400); // content that streams in after the first paint
     return () => {

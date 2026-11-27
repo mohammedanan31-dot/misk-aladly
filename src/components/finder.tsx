@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { questions, recommend } from "@/data/finder";
 import { formatPrice, genderLabel } from "@/data/site";
+import { Words } from "./words";
 import { AddToBag } from "./bag";
 
 export function FragranceFinder() {
@@ -15,24 +16,24 @@ export function FragranceFinder() {
   const result = done ? recommend(answers) : null;
 
   return (
-    <section id="finder" className="section-light relative scroll-mt-20 overflow-hidden py-24 sm:py-32" aria-labelledby="finder-title">
+    <section id="finder" className="section-light section-in relative scroll-mt-20 overflow-hidden py-24 sm:py-32" aria-labelledby="finder-title">
       <div className="mx-auto max-w-6xl px-5 sm:px-10">
-        <div className="reveal text-center">
+        <div className="text-center">
           <p className="kicker">Fragrance Finder</p>
           <h2 id="finder-title" className="mt-5 font-display text-4xl font-bold leading-[1.4] sm:text-6xl">
-            اكتشف العطر <span className="text-wine">الذي يشبهك</span>
+            <Words text="اكتشف العطر" /> <Words text="الذي يشبهك" wordClass="text-gold" start={2} />
           </h2>
           <p className="mx-auto mt-4 max-w-md text-lg text-ink/65">خمسة أسئلة قصيرة، ونرشّح لك عطرك من مجموعة مسك العدلي.</p>
         </div>
 
-        <div className="reveal mx-auto mt-14 max-w-3xl border border-ink/12 bg-ivory/70 shadow-[0_40px_80px_-50px_rgba(36,9,17,0.45)]">
+        <div className="reveal reveal-scale glass mx-auto mt-14 max-w-3xl overflow-hidden">
           {/* progress */}
-          <div className="flex items-center justify-between border-b border-ink/10 px-6 py-4 text-sm sm:px-10">
+          <div className="flex items-center justify-between border-b border-[rgba(255,90,60,0.2)] px-6 py-4 text-sm sm:px-10">
             <span className="font-latin tracking-[0.3em] text-ink/50" dir="ltr">
               {String(Math.min(step + 1, questions.length)).padStart(2, "0")} / {String(questions.length).padStart(2, "0")}
             </span>
             <div className="mx-6 h-px flex-1 bg-ink/10">
-              <div className="h-px bg-wine transition-[width] duration-700 ease-[var(--ease-silk)]" style={{ width: `${(step / questions.length) * 100}%` }} />
+              <div className="h-[2px] bg-[#ff2a2f] shadow-[0_0_10px_#ff2a2f] transition-[width] duration-700 ease-[var(--ease-silk)]" style={{ width: `${(step / questions.length) * 100}%` }} />
             </div>
             {step > 0 && !done ? (
               <button type="button" onClick={() => setAnswers((a) => a.slice(0, -1))} className="text-ink/60 hover:text-wine">
@@ -67,8 +68,8 @@ export function FragranceFinder() {
 
             {result && (
               <div key="result" className="finder-step grid items-center gap-8 sm:grid-cols-[0.8fr_1.2fr]">
-                <div className="relative mx-auto aspect-[3/4] w-full max-w-[16rem] overflow-hidden" style={{ background: `linear-gradient(180deg, ${result.perfume.theme.from}, ${result.perfume.theme.to})` }}>
-                  <Image src={result.perfume.gallery[0]} alt={result.perfume.name} fill sizes="256px" className="object-cover" />
+                <div className="frame relative mx-auto aspect-[3/4] w-full max-w-[16rem]" style={{ background: `linear-gradient(180deg, ${result.perfume.theme.from}, ${result.perfume.theme.to})` }}>
+                  <Image src={result.perfume.scene} alt={result.perfume.name} fill sizes="256px" className="object-cover" />
                 </div>
                 <div>
                   <p className="kicker">عطرك هو</p>

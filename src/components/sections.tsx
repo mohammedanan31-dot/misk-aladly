@@ -3,6 +3,7 @@ import Link from "next/link";
 import { contact, faqs, perfumes, points, reviews, shipping, whatsappLink } from "@/data/site";
 import { WhatsAppIcon } from "./icons";
 import { LoyaltyProgress } from "./loyalty-progress";
+import { Words } from "./words";
 
 /* ---------- Names rail ---------- */
 export function NamesRail() {
@@ -26,16 +27,16 @@ export function NamesRail() {
 /* ---------- 04 · Immersive fragrance experience ---------- */
 export function Experience() {
   return (
-    <section className="relative overflow-hidden bg-night py-24 sm:py-32" aria-labelledby="exp-title">
+    <section id="experience" className="section-in relative overflow-hidden bg-night py-24 sm:py-32" aria-labelledby="exp-title">
       <div className="mx-auto max-w-7xl px-5 sm:px-10">
-        <div className="reveal max-w-2xl">
-          <p className="kicker">The Experience · 03</p>
+        <div className="max-w-2xl">
+          <p className="kicker reveal">The Experience · 03</p>
           <h2 id="exp-title" className="mt-6 font-display text-4xl font-bold leading-[1.45] sm:text-6xl">
-            رذاذٌ واحد <span className="text-gold">يكفي ليتذكّرك الجميع</span>
+            <Words text="رذاذٌ واحد" /> <Words text="يكفي ليتذكّرك الجميع" wordClass="text-gold" start={2} />
           </h2>
         </div>
       </div>
-      <div className="open-up relative mt-14 aspect-[16/10] w-full overflow-hidden sm:aspect-[9/4]">
+      <div className="open-up relative mx-auto mt-14 aspect-[16/10] w-[94vw] max-w-[1360px] overflow-hidden rounded-[2rem] border border-[rgba(255,90,60,0.3)] sm:aspect-[9/4]">
         <Image src="/scenes/panorama.webp" alt="قارورة Icon من مسك العدلي على مخمل خمري بين حروف MISK ALADLY الذهبية" fill sizes="100vw" className="parallax object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-night/70 via-transparent to-night/30" />
       </div>
@@ -45,7 +46,7 @@ export function Experience() {
           { k: "100 مل", v: "حجم سخي لكل عطر من عطور المجموعة." },
           { k: "جاهز للإهداء", v: "كل عطر يصلك في علبته الخمرية الفاخرة بشرائط ذهبية." },
         ].map((x, i) => (
-          <div key={x.k} className="reveal border-t border-gold/20 pt-6" style={{ transitionDelay: `${i * 100}ms` }}>
+          <div key={x.k} className="reveal glass p-7" style={{ transitionDelay: `${i * 100}ms` }}>
             <p className="font-display text-2xl font-bold text-gold-soft">{x.k}</p>
             <p className="mt-3 leading-8 text-champagne/70">{x.v}</p>
           </div>
@@ -61,7 +62,7 @@ const manifesto =
 
 export function Story() {
   return (
-    <section id="story" className="relative scroll-mt-16 overflow-hidden bg-burgundy py-24 sm:py-36" aria-labelledby="story-title">
+    <section id="story" className="section-in relative scroll-mt-16 overflow-hidden bg-burgundy py-24 sm:py-36" aria-labelledby="story-title">
       <Image src="/brand/logo.webp" alt="" aria-hidden="true" width={491} height={439} className="pointer-events-none absolute -left-24 top-10 w-[34rem] max-w-none opacity-[0.05] sm:-left-10" />
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-10 lg:grid-cols-[1.2fr_1fr] lg:gap-24">
         <div>
@@ -81,7 +82,7 @@ export function Story() {
               { k: "فن العطر", v: "تركيبات مستوردة، اخترناها بعناية لتدوم وتترك أثرًا." },
               { k: "التفرّد", v: "لكل عطر مزاجه وحكايته، ولكل شخص توقيعه." },
             ].map((x, i) => (
-              <div key={x.k} className="reveal" style={{ transitionDelay: `${i * 100}ms` }}>
+              <div key={x.k} className="reveal glass p-6" style={{ transitionDelay: `${i * 100}ms` }}>
                 <p className="font-latin text-sm text-gold/70" dir="ltr" style={{ textAlign: "right" }}>
                   0{i + 1}
                 </p>
@@ -92,7 +93,7 @@ export function Story() {
           </div>
         </div>
 
-        <figure className="reveal">
+        <figure className="reveal reveal-scale">
           <div className="frame mask-reveal relative aspect-[4/5]">
             <Image src="/scenes/sunset-dome.webp" alt="قارورة مسك العدلي ونقش الطاووس عند الغروب" fill sizes="(min-width:1024px) 40vw, 100vw" className="object-cover" />
           </div>
@@ -112,31 +113,31 @@ export function Story() {
 /* ---------- 06 · Packaging & gifting ---------- */
 export function Packaging() {
   return (
-    <section className="section-light relative overflow-hidden py-24 sm:py-36" aria-labelledby="pack-title">
+    <section className="section-light section-in relative overflow-hidden py-24 sm:py-36" aria-labelledby="pack-title">
       <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-10 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
         <div className="lg:order-2">
           <div className="grid grid-cols-[1.4fr_1fr] gap-4 sm:gap-6">
-            <div className="mask-reveal relative row-span-2 aspect-[3/4] overflow-hidden">
+            <div className="mask-reveal frame relative row-span-2 aspect-[3/4]">
               <Image src="/scenes/giftbag.webp" alt="كيس هدايا مسك العدلي الخمري بشرائط ذهبية وشعار الطاووس" fill sizes="(min-width:1024px) 32vw, 58vw" className="object-cover object-[40%_45%]" />
             </div>
-            <div className="mask-reveal relative aspect-square overflow-hidden" style={{ transitionDelay: "120ms" }}>
+            <div className="mask-reveal frame relative aspect-square" style={{ transitionDelay: "120ms" }}>
               <Image src="/scenes/giftbag.webp" alt="" aria-hidden="true" fill sizes="(min-width:1024px) 20vw, 40vw" className="scale-[2.1] object-cover object-[30%_58%]" />
             </div>
-            <div className="mask-reveal relative aspect-square overflow-hidden" style={{ transitionDelay: "240ms" }}>
+            <div className="mask-reveal frame relative aspect-square" style={{ transitionDelay: "240ms" }}>
               <Image src="/scenes/giftbag.webp" alt="" aria-hidden="true" fill sizes="(min-width:1024px) 20vw, 40vw" className="scale-[2.2] object-cover object-[22%_14%]" />
             </div>
           </div>
         </div>
-        <div className="reveal lg:order-1">
+        <div className="reveal reveal-right lg:order-1">
           <p className="kicker">The Gift · 05</p>
           <h2 id="pack-title" className="mt-6 font-display text-4xl font-bold leading-[1.45] sm:text-6xl">
-            الفخامة تبدأ <span className="text-gold">قبل أول رشة</span>
+            <Words text="الفخامة تبدأ" /> <Words text="قبل أول رشة" wordClass="text-gold" start={2} />
           </h2>
           <p className="mt-6 max-w-md text-xl leading-9 text-ink/75">كل عطر يصلك في علبته الخمرية الفاخرة بشرائط ذهبية — هدية تليق بمن تحب.</p>
           <ul className="mt-8 space-y-3 text-ink/80">
             {["علبة خمرية بشعار الطاووس الذهبي", "شرائط ذهبية جاهزة للإهداء", `توصيل لجميع المحافظات خلال ${shipping.days}`].map((t) => (
               <li key={t} className="flex items-center gap-4">
-                <span className="inline-block size-[6px] rotate-45 bg-wine" />
+                <span className="inline-block size-[7px] rounded-full bg-[#ff2a2f] shadow-[0_0_10px_#ff2a2f]" />
                 {t}
               </li>
             ))}
@@ -158,12 +159,12 @@ export function Loyalty() {
     { n: "03", t: "استمتع بالمكافأة", d: `عند ${points.redeem} نقطة تحصل على خصم ${points.discount} جنيه على طلبك القادم.` },
   ];
   return (
-    <section id="loyalty" className="relative scroll-mt-16 overflow-hidden bg-espresso py-24 sm:py-36" aria-labelledby="loyalty-title">
+    <section id="loyalty" className="section-in relative scroll-mt-16 overflow-hidden bg-espresso py-24 sm:py-36" aria-labelledby="loyalty-title">
       <div className="mx-auto grid max-w-7xl items-center gap-16 px-5 sm:px-10 lg:grid-cols-2 lg:gap-24">
         <div className="reveal">
           <p className="kicker">Misk Points · 06</p>
           <h2 id="loyalty-title" className="mt-6 font-display text-4xl font-bold leading-[1.45] sm:text-6xl">
-            كل عبوة <span className="text-gold">تحمل مكافأة</span>
+            <Words text="كل عبوة" /> <Words text="تحمل مكافأة" wordClass="text-gold" start={2} />
           </h2>
           <ol className="mt-10 space-y-0">
             {steps.map((s) => (
@@ -181,8 +182,8 @@ export function Loyalty() {
         </div>
 
         {/* membership card */}
-        <div className="reveal">
-          <div className="relative mx-auto aspect-[1.6/1] w-full max-w-lg overflow-hidden border border-gold/35 bg-[linear-gradient(135deg,#641d35_0%,#390e20_45%,#240911_100%)] p-6 shadow-[0_50px_100px_-40px_rgba(0,0,0,0.9)] sm:p-9">
+        <div className="reveal reveal-scale">
+          <div className="float relative mx-auto aspect-[1.6/1] w-full max-w-lg overflow-hidden rounded-[1.5rem] border border-[rgba(255,110,80,0.5)] bg-[linear-gradient(135deg,#b3141a_0%,#5a0707_45%,#220303_100%)] p-6 shadow-[0_50px_100px_-40px_rgba(0,0,0,0.9)] sm:p-9">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_80%_at_85%_10%,rgba(212,177,123,0.25),transparent_70%)]" />
             <Image src="/brand/logo.webp" alt="" aria-hidden="true" width={491} height={439} className="pointer-events-none absolute -bottom-10 -left-8 w-56 opacity-10" />
             <div className="relative flex h-full flex-col justify-between">
@@ -248,12 +249,12 @@ export function Reviews() {
 /* ---------- 09 · FAQ ---------- */
 export function Faq() {
   return (
-    <section id="faq" className="section-light scroll-mt-16 py-24 sm:py-32" aria-labelledby="faq-title">
+    <section id="faq" className="section-light section-in scroll-mt-16 py-24 sm:py-32" aria-labelledby="faq-title">
       <div className="mx-auto grid max-w-7xl gap-14 px-5 sm:px-10 lg:grid-cols-[1fr_1.4fr]">
-        <div className="reveal">
+        <div className="reveal reveal-scale">
           <p className="kicker">Questions · 07</p>
           <h2 id="faq-title" className="mt-6 font-display text-4xl font-bold leading-[1.4] sm:text-5xl">
-            قبل أن <span className="text-gold">تختار</span>
+            <Words text="قبل أن" /> <Words text="تختار" wordClass="text-gold" start={2} />
           </h2>
           <p className="mt-5 max-w-sm leading-8 text-ink/65">لم تجد إجابتك؟ راسلنا على واتساب وسنرد عليك سريعًا.</p>
           <a href={whatsappLink("مرحبًا مسك العدلي، عندي سؤال 🌹")} target="_blank" rel="noopener noreferrer" className="btn-ghost magnetic mt-8">
@@ -266,7 +267,7 @@ export function Faq() {
             <details key={f.q} className="reveal group border-b border-ink/15">
               <summary className="flex cursor-pointer items-center justify-between gap-4 py-6 font-display text-xl font-bold sm:text-2xl">
                 {f.q}
-                <span className="faq-plus flex size-9 shrink-0 items-center justify-center border border-ink/25 font-sans text-xl text-wine transition-transform duration-700 ease-[var(--ease-silk)]">
+                <span className="faq-plus flex size-9 shrink-0 items-center justify-center rounded-full border border-[rgba(255,90,60,0.5)] font-sans text-xl text-wine transition-transform duration-700 ease-[var(--ease-silk)]">
                   +
                 </span>
               </summary>
@@ -282,15 +283,15 @@ export function Faq() {
 /* ---------- 10 · Final call ---------- */
 export function FinalCta() {
   return (
-    <section id="contact" className="relative isolate overflow-hidden bg-burgundy py-28 text-center sm:py-40" aria-labelledby="final-title">
+    <section id="contact" className="section-in relative isolate mx-auto my-10 w-[94vw] max-w-[1360px] overflow-hidden rounded-[2rem] border border-[rgba(255,90,60,0.35)] bg-burgundy py-28 text-center sm:py-36" aria-labelledby="final-title">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(50%_60%_at_50%_100%,rgba(197,164,109,0.22),transparent_70%)]" />
       <Image src="/brand/logo.webp" alt="" aria-hidden="true" width={491} height={439} className="reveal mx-auto h-24 w-auto sm:h-28" />
-      <div className="reveal mx-auto mt-10 max-w-3xl px-5">
+      <div className="mx-auto mt-10 max-w-3xl px-5">
         <h2 id="final-title" className="font-display text-5xl font-bold leading-[1.4] sm:text-7xl">
-          اترك أثرًا <span className="text-gold">لا يُنسى</span>
+          <Words text="اترك أثرًا" /> <Words text="لا يُنسى" wordClass="text-gold" start={2} />
         </h2>
-        <p className="mx-auto mt-6 max-w-md text-xl leading-9 text-champagne/75">محتار بين العطور؟ قلّنا ذوقك، ونرشّح لك الأنسب.</p>
-        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <p className="reveal mx-auto mt-6 max-w-md text-xl leading-9 text-champagne/75">محتار بين العطور؟ قلّنا ذوقك، ونرشّح لك الأنسب.</p>
+        <div className="reveal mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <a href={whatsappLink("مرحبًا مسك العدلي، أحتاج مساعدة في اختيار عطر 🌹")} target="_blank" rel="noopener noreferrer" className="btn-primary magnetic">
             <WhatsAppIcon className="size-5" />
             تواصل عبر واتساب

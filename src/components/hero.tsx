@@ -1,73 +1,141 @@
-import Link from "next/link";
-import { getImageProps } from "next/image";
-import { brand } from "@/data/site";
+"use client";
 
-const alt = "عطور مسك العدلي الأربعة — Adrenaline و Velvet Kiss و Icon و Majestic — على منصات من الحجر والرمل تحت ضوء دافئ";
+import Image from "next/image";
+import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { formatPrice, genderLabel, getPerfume, type Perfume } from "@/data/site";
+import { AddToBag } from "./bag";
+
+/** Order of the selector pills, as in the approved design. */
+const ORDER = ["adrenaline", "icon", "velvet-kiss", "majestic"] as const;
+const ITEMS = ORDER.map((s) => getPerfume(s)!) as Perfume[];
+const AUTO_MS = 7000;
 
 /**
- * Full-screen cinematic opening. Wide campaign photo on tablets and desktop, the portrait
- * four-bottle photo on phones (art direction via <picture>). Desktop adds pointer parallax.
+ * Product hero: a framed red stage with the selected bottle in the centre, its name large on the left,
+ * details and add-to-bag on the right, and pills to switch perfume. Switches animate (bottle cross-fade with
+ * blur and lift, name letter by letter, copy and price swap). It auto-advances until the visitor interacts.
  */
 export function Hero() {
-  const common = { alt, sizes: "(min-width: 1280px) 71vw, 100vw", quality: 82, priority: true } as const;
-  const {
-    props: { srcSet: wide },
-  } = getImageProps({ ...common, src: "/scenes/hero-four.webp", width: 1672, height: 940 });
-  const {
-    props: { srcSet: tall, ...img },
-  } = getImageProps({ ...common, src: "/scenes/collection.webp", width: 1080, height: 1350 });
+  const [active, setActive] = useState(0);
+  const [auto, setAuto] = useState(true);
+  const [hover, setHover] = useState(false);
+  const p = ITEMS[active];
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  const pick = useCallback((i: number, byUser = true) => {
+    setActive((i + ITEMS.length) % ITEMS.length);
+    if (byUser) setAuto(false);
+  }, []);
+
+  useEffect(() => {
+    if (!auto || hover || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    timer.current = setTimeout(() => pick(active + 1, false), AUTO_MS);
+    return () => clearTimeout(timer.current);
+  }, [active, auto, hover, pick]);
 
   return (
-    <section className="relative isolate overflow-hidden bg-espresso" aria-labelledby="hero-title">
-      <div className="relative xl:h-[100svh] xl:min-h-[720px]">
-        {/* photograph */}
-        <div className="hero-media relative overflow-hidden xl:absolute xl:inset-y-0 xl:left-0 xl:w-[71%]">
-          <div data-depth="16" className="hero-depth relative aspect-[4/5] sm:aspect-[16/9] xl:aspect-auto xl:h-full">
-            <picture>
-              <source media="(min-width: 640px)" srcSet={wide} />
-              <img {...img} srcSet={tall} alt={alt} className="absolute inset-0 h-full w-full scale-[1.03] object-cover sm:object-[53%_50%]" />
-            </picture>
-          </div>
-          {/* light and shade */}
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_60%_at_50%_15%,rgba(255,214,150,0.12),transparent_70%)]" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-espresso via-espresso/40 to-transparent xl:h-1/3" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[9%] bg-gradient-to-l from-espresso to-transparent xl:block" />
-        </div>
+    <section className="relative px-[3vw] pb-10 pt-4 sm:pt-6" aria-roledescription="carousel" aria-label="عطور مسك العدلي">
+      <div
+        className="hero-card hero-exit mx-auto w-full max-w-[1360px] lg:h-[min(92svh,920px)] lg:min-h-[640px]"
+        dir="ltr"
+        onPointerEnter={() => setHover(true)}
+        onPointerLeave={() => setHover(false)}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowRight") pick(active + 1);
+          if (e.key === "ArrowLeft") pick(active - 1);
+        }}
+      >
+        {/* per-perfume light, cross-faded */}
+        {ITEMS.map((x, i) => (
+          <div
+            key={x.slug}
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 transition-opacity duration-[1200ms]"
+            style={{ opacity: i === active ? 1 : 0, background: `radial-gradient(40% 50% at 61% 60%, ${x.theme.glow}55, transparent 70%)` }}
+          />
+        ))}
 
-        {/* words */}
-        <div className="relative z-10 -mt-24 px-5 pb-16 sm:-mt-28 sm:px-10 xl:absolute xl:inset-y-0 xl:right-0 xl:mt-0 xl:flex xl:w-[31%] xl:items-center xl:pb-0 xl:ps-14 xl:pe-4 2xl:ps-20">
-          <div data-depth="-6" className="hero-depth max-w-xl">
-            <p className="kicker rise" style={{ animationDelay: "0.2s" }}>
-              Misk Aladly
-            </p>
-            <h1 id="hero-title" className="mt-6 font-display text-[2.85rem] font-bold leading-[1.35] sm:text-7xl sm:leading-[1.3] xl:text-[3.5rem] 2xl:text-[4.6rem]">
-              <span className="line-mask" style={{ "--i": 0 } as React.CSSProperties}>
-                <span>حين يصبح العطر</span>
-              </span>
-              <span className="line-mask" style={{ "--i": 1 } as React.CSSProperties}>
-                <span className="text-gold">توقيعًا لا يُنسى</span>
-              </span>
+        {/* room for the header that sits on the card */}
+        <div className="h-20 sm:h-24" aria-hidden="true" />
+
+        <div className="relative grid gap-4 px-5 pb-6 sm:px-10 lg:absolute lg:inset-0 lg:block lg:p-0">
+          {/* ghost bottle, far left */}
+          <div data-depth="-18" className="hero-depth pointer-events-none absolute left-[3%] top-[14%] hidden h-[66%] w-[26%] lg:block" aria-hidden="true">
+            {ITEMS.map((x, i) => (
+              <div key={x.slug} className="hero-ghost hero-shot absolute inset-0 opacity-0" data-state={i === active ? "in" : "out"} style={i === active ? { opacity: 0.16 } : undefined}>
+                <Image src={x.scene} alt="" fill sizes="26vw" className="scale-[1.35] object-contain blur-[1.5px]" />
+              </div>
+            ))}
+          </div>
+
+          {/* the bottle on its stage */}
+          <div className="order-2 lg:absolute lg:left-[61%] lg:top-[9%] lg:h-[73%] lg:w-auto lg:-translate-x-1/2" style={{ aspectRatio: "495 / 673" }}>
+            <div data-depth="12" className="hero-depth relative mx-auto h-full w-[78%] max-w-[26rem] sm:w-[60%] lg:w-full lg:max-w-none" style={{ aspectRatio: "495 / 673" }}>
+              {ITEMS.map((x, i) => (
+                <div key={x.slug} className="hero-scene hero-shot absolute inset-0" data-state={i === active ? "in" : "out"} aria-hidden={i !== active}>
+                  <Image src={x.scene} alt={i === active ? `قارورة ${x.name} من مسك العدلي` : ""} fill priority={i === 0} sizes="(min-width:1024px) 36vw, 78vw" className="object-cover" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* name + line */}
+          <div data-depth="-6" className="hero-depth order-1 text-center lg:absolute lg:left-[8%] lg:top-[39%] lg:max-w-[44%] lg:text-left">
+            <h1 key={p.slug} className="hero-title font-latin text-[11vw] font-semibold uppercase leading-[0.95] tracking-[0.01em] text-white sm:text-7xl lg:text-[clamp(2.8rem,4.8vw,5.2rem)]" aria-live="polite">
+              {p.name.split(" ").map((word, w, all) => {
+                const offset = all.slice(0, w).join(" ").length + (w ? 1 : 0);
+                return (
+                  <span key={w} className="inline-block whitespace-nowrap">
+                    {word.split("").map((c, k) => (
+                      <span key={k} className="ch" style={{ "--i": offset + k } as React.CSSProperties}>
+                        {c}
+                      </span>
+                    ))}
+                    {w < all.length - 1 ? " " : ""}
+                  </span>
+                );
+              })}
             </h1>
-            <div className="gold-line mt-7 w-40" style={{ transitionDelay: "0.9s" }} />
-            <p className="rise mt-7 max-w-md text-xl leading-9 text-champagne/80" style={{ animationDelay: "0.85s" }}>
-              {brand.intro}
-            </p>
-            <div className="rise mt-10 flex flex-wrap gap-3" style={{ animationDelay: "1s" }}>
-              <Link href="#collection" className="btn-primary magnetic">
-                اكتشف المجموعة
+            <div key={`t-${p.slug}`} className="fade-swap mt-5 flex items-start justify-center gap-5 lg:justify-start" style={{ animationDelay: "0.25s" }}>
+              <span className="mt-3 hidden h-px w-20 shrink-0 bg-white/80 sm:block" />
+              <div>
+                <p className="font-latin text-lg font-light leading-snug text-white/95 sm:text-2xl lg:max-w-[17rem]">{p.en}</p>
+                <p className="mt-2 text-base text-white/60" dir="rtl">
+                  {p.short}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* details */}
+          <div key={`d-${p.slug}`} className="fade-swap order-3 flex flex-wrap items-end justify-between gap-4 lg:absolute lg:right-[4%] lg:top-[43%] lg:block lg:w-[15.5rem]" style={{ animationDelay: "0.35s" }}>
+            <div>
+              <Link href={`/perfume/${p.slug}`} className="link-line font-latin text-xl text-white/90 hover:text-white">
+                Details
               </Link>
-              <Link href="#finder" className="btn-ghost magnetic">
-                اعثر على عطرك
-              </Link>
+              <p className="mt-1 font-latin text-4xl font-semibold text-white sm:text-[2.6rem]" dir="rtl" style={{ textAlign: "left" }}>
+                {formatPrice(p.price)}
+              </p>
+              <p className="mt-2 font-latin text-lg text-white/85">
+                {p.size} ml <span className="mx-1 text-white/40">·</span>
+                <span dir="rtl">{genderLabel[p.gender]}</span>
+              </p>
+            </div>
+            <AddToBag slug={p.slug} label="Add to Cart +" className="mt-0 w-full sm:w-auto lg:mt-5 lg:w-full" />
+          </div>
+
+          {/* selector */}
+          <div className="order-4 lg:absolute lg:bottom-[5%] lg:left-1/2 lg:w-[66%] lg:-translate-x-1/2">
+            <div className="grid grid-cols-2 gap-3 rounded-[2.5rem] border border-[rgba(255,70,60,0.5)] p-3 sm:flex sm:items-center sm:justify-around sm:rounded-full sm:px-10 sm:py-5" role="tablist" aria-label="اختر العطر">
+              {ITEMS.map((x, i) => (
+                <button key={x.slug} type="button" role="tab" aria-selected={i === active} aria-label={`${x.name} — ${genderLabel[x.gender]}`} onClick={() => pick(i)} className="pill">
+                  {x.name}
+                </button>
+              ))}
             </div>
           </div>
         </div>
-
-        {/* scroll cue */}
-        <a href="#collection" className="rise absolute bottom-8 left-[35.5%] z-10 hidden -translate-x-1/2 flex-col items-center gap-3 xl:flex" style={{ animationDelay: "1.4s" }} aria-label="انتقل إلى المجموعة">
-          <span className="font-latin text-[10px] uppercase tracking-[0.5em] text-champagne/60">Scroll</span>
-          <span className="scroll-cue" />
-        </a>
       </div>
     </section>
   );

@@ -34,9 +34,9 @@ export default async function PerfumePage({ params }: Props) {
   const next = perfumes[(i + 1) % perfumes.length];
   const others = perfumes.filter((p) => p !== perfume);
   const shots = [
-    { src: perfume.gallery[0], alt: `قارورة ${perfume.name} من مسك العدلي` },
+    { src: perfume.scene, alt: `قارورة ${perfume.name} من مسك العدلي` },
     { src: perfume.photo, alt: `${perfume.name} — صورة من حملة مسك العدلي` },
-    ...perfume.gallery.slice(1).map((src) => ({ src, alt: `${perfume.name} — مسك العدلي` })),
+    ...perfume.gallery.map((src) => ({ src, alt: `${perfume.name} — مسك العدلي` })),
   ];
   const dark = perfume.theme.ink === "dark";
 
@@ -189,7 +189,7 @@ export default async function PerfumePage({ params }: Props) {
               <article key={o.slug} className="reveal group">
                 <Link href={`/perfume/${o.slug}`} className="block">
                   <div className="relative aspect-[4/5] overflow-hidden">
-                    <Image src={o.gallery[0]} alt={o.name} fill sizes="(min-width:640px) 30vw, 100vw" className="object-cover transition-transform duration-[1400ms] ease-[var(--ease-silk)] group-hover:scale-[1.04]" />
+                    <Image src={o.scene} alt={o.name} fill sizes="(min-width:640px) 30vw, 100vw" className="object-cover transition-transform duration-[1400ms] ease-[var(--ease-silk)] group-hover:scale-[1.04]" />
                   </div>
                   <div className="mt-4 flex items-baseline justify-between">
                     <p className="font-latin text-2xl uppercase tracking-[0.08em]" dir="ltr">

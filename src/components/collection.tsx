@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { formatPrice, genderLabel, perfumes } from "@/data/site";
 import { AddToBag } from "./bag";
+import { Words } from "./words";
 import { ShowcaseTrack } from "./showcase-track";
 
 /**
@@ -12,14 +13,14 @@ export function Collection() {
   return (
     <section id="collection" className="relative scroll-mt-16 py-24 sm:py-32" aria-labelledby="collection-title">
       <div className="mx-auto max-w-7xl px-5 sm:px-10">
-        <div className="reveal flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+        <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
             <p className="kicker">The Collection · 01</p>
             <h2 id="collection-title" className="mt-6 font-display text-5xl font-bold leading-[1.35] sm:text-7xl">
-              أربعة عطور، <span className="text-gold">أربع شخصيات</span>
+              <Words text="أربعة عطور،" /> <Words text="أربع شخصيات" wordClass="text-gold" start={2} />
             </h2>
           </div>
-          <p className="max-w-sm text-lg leading-8 text-champagne/70">عطران رجاليان وعطران نسائيان، كلٌّ بحجم 100 مل. لكل عطر مزاجه وحكايته.</p>
+          <p className="reveal max-w-sm text-lg leading-8 text-champagne/70">عطران رجاليان وعطران نسائيان، كلٌّ بحجم 100 مل. لكل عطر مزاجه وحكايته.</p>
         </div>
         <div className="gold-line mt-10" />
       </div>
@@ -34,13 +35,13 @@ export function Collection() {
                 id={p.slug}
                 data-ink={p.theme.ink}
                 aria-label={`${p.name} — ${genderLabel[p.gender]}`}
-                className="chapter relative w-[86vw] max-w-[26rem] shrink-0 snap-center overflow-hidden sm:w-[60vw] lg:w-auto lg:max-w-none lg:scroll-mt-20"
+                className="chapter section-in relative w-[86vw] max-w-[26rem] shrink-0 snap-center overflow-hidden rounded-[1.75rem] border border-[rgba(255,90,60,0.3)] sm:w-[60vw] lg:mx-auto lg:mb-8 lg:w-[94vw] lg:max-w-[1360px] lg:scroll-mt-20 lg:rounded-[2rem]"
                 style={{ background: `radial-gradient(55% 60% at ${flip ? "28%" : "72%"} 45%, ${p.theme.glow}55, transparent 70%), linear-gradient(160deg, ${p.theme.from}, ${p.theme.to})` }}
               >
-                <div className="mx-auto grid max-w-7xl items-center lg:min-h-[92svh] lg:grid-cols-2 lg:gap-20 lg:px-10 lg:py-24">
+                <div className="mx-auto grid max-w-7xl items-center lg:min-h-[80svh] lg:grid-cols-2 lg:gap-20 lg:px-10 lg:py-24">
                   {/* photograph */}
                   <Link href={`/perfume/${p.slug}`} className={`chapter-photo group block ${flip ? "lg:order-2" : ""}`} aria-label={`اكتشف ${p.name}`}>
-                    <div className="mask-reveal relative aspect-[4/5] overflow-hidden lg:aspect-[4/5]">
+                    <div className="mask-reveal relative aspect-[4/5] overflow-hidden lg:rounded-[1.5rem]">
                       <Image src={p.photo} alt={`${p.name} — مسك العدلي`} fill sizes="(min-width:1024px) 42vw, (min-width:640px) 60vw, 86vw" className="object-cover" />
                       <span className="absolute start-4 top-4 bg-night/55 px-3 py-1 text-sm text-champagne backdrop-blur-md">{genderLabel[p.gender]}</span>
                     </div>
@@ -48,11 +49,11 @@ export function Collection() {
 
                   {/* words */}
                   <div className={`p-6 sm:p-8 lg:p-0 ${flip ? "lg:order-1" : ""}`}>
-                    <div className="reveal">
+                    <div className={`reveal ${flip ? "reveal-left" : "reveal-right"}`}>
                       <p className="flex items-center gap-4 font-latin text-sm tracking-[0.4em] text-[var(--accent)]" dir="ltr" style={{ justifyContent: "flex-end" }}>
                         <span>0{i + 1} / 04</span>
                       </p>
-                      <h3 className="mt-4 font-latin text-[2.15rem] uppercase leading-none tracking-[0.04em] min-[400px]:text-[2.5rem] sm:text-6xl lg:text-[5.5rem] lg:tracking-[0.06em]" dir="ltr" style={{ textAlign: "right" }}>
+                      <h3 className="mt-4 font-latin text-[2.15rem] uppercase leading-none tracking-[0.04em] min-[400px]:text-[2.5rem] sm:text-6xl lg:text-[clamp(3rem,4.6vw,4.8rem)] lg:tracking-[0.04em]" dir="ltr" style={{ textAlign: "right" }}>
                         {p.nameParts[0]}
                         <em className="font-normal italic text-[var(--accent)]">{p.nameParts[1]}</em>
                       </h3>

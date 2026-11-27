@@ -49,6 +49,10 @@ export type Perfume = {
   mood: string;
   /** شعار العطر من حملة مسك العدلي */
   tagline: string;
+  /** ترجمة إنجليزية أمينة لوصفه المختصر (short) */
+  en: string;
+  /** مشهد القارورة في واجهة الموقع */
+  scene: string;
   /** الصورة الرئيسية للعطر (تصوير حقيقي) */
   photo: string;
   /** صور إضافية للمعرض في صفحة العطر */
@@ -80,9 +84,11 @@ export const perfumes: Perfume[] = [
     light: "#E7B98A",
     glow: "#641d35",
     tagline: "دفء يلامس الحواس",
+    en: "A warm sweetness that lingers in memory.",
+    scene: "/hero/velvet-kiss.webp",
     photo: "/scenes/noir-gold.webp",
     gallery: ["/perfumes/photo-velvet-kiss.webp", "/scenes/sunset-dome.webp"],
-    theme: { from: "#390E20", to: "#641D35", glow: "#8F2948", ink: "light" },
+    theme: { from: "#4a0a0c", to: "#2a0405", glow: "#c2361f", ink: "light" },
   },
   {
     slug: "adrenaline",
@@ -100,9 +106,11 @@ export const perfumes: Perfume[] = [
     light: "#f3e5cc",
     glow: "#390e20",
     tagline: "طاقة جذّابة",
+    en: "Clean, soft and elegant — at any hour.",
+    scene: "/hero/adrenaline.webp",
     photo: "/scenes/sunset-arch.webp",
     gallery: ["/perfumes/photo-adrenaline.webp"],
-    theme: { from: "#FAF5ED", to: "#F3E5CC", glow: "#D4B17B", ink: "dark" },
+    theme: { from: "#3f0908", to: "#230404", glow: "#d0682c", ink: "light" },
   },
   {
     slug: "majestic",
@@ -120,9 +128,11 @@ export const perfumes: Perfume[] = [
     light: "#D9A35B",
     glow: "#5A1A12",
     tagline: "فخامة ملكية",
+    en: "A warm presence that turns heads.",
+    scene: "/hero/majestic.webp",
     photo: "/scenes/hands.webp",
     gallery: ["/perfumes/photo-majestic.webp"],
-    theme: { from: "#240911", to: "#390E20", glow: "#B8742F", ink: "light" },
+    theme: { from: "#360606", to: "#1d0303", glow: "#b8471c", ink: "light" },
   },
   {
     slug: "icon",
@@ -141,9 +151,11 @@ export const perfumes: Perfume[] = [
     light: "#F0C98E",
     glow: "#7A3A1E",
     tagline: "قوة الحضور",
+    en: "A classic freshness that never fades.",
+    scene: "/hero/icon.webp",
     photo: "/scenes/icon-velvet.webp",
     gallery: ["/perfumes/photo-icon.webp"],
-    theme: { from: "#2A1209", to: "#4A2614", glow: "#C5A46D", ink: "light" },
+    theme: { from: "#43100a", to: "#260504", glow: "#d68a3a", ink: "light" },
   },
 ];
 

@@ -75,10 +75,10 @@ export function FluidBackground() {
     gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
     const U = (n: string) => gl.getUniformLocation(prog, n);
     const uRes = U("uRes"), uTime = U("uTime"), uMouse = U("uMouse"), uScroll = U("uScroll");
-    gl.uniform3fv(U("uBase"), rgb("#2a0b17"));
-    gl.uniform3fv(U("uWine"), rgb("#641D35"));
-    gl.uniform3fv(U("uGold"), rgb("#C5A46D"));
-    gl.uniform3fv(U("uEmber"), rgb("#8a4a32"));
+    gl.uniform3fv(U("uBase"), rgb("#2a0404"));
+    gl.uniform3fv(U("uWine"), rgb("#7a0a0c"));
+    gl.uniform3fv(U("uGold"), rgb("#F0A65A"));
+    gl.uniform3fv(U("uEmber"), rgb("#c2361f"));
 
     // the noise is soft and the canvas is upscaled, so a third of CSS resolution is plenty
     const resize = () => {

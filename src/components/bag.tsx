@@ -240,7 +240,7 @@ function BagDrawer() {
                   return (
                     <li key={l.slug} className="flex gap-4 py-5">
                       <Link href={`/perfume/${p.slug}`} onClick={() => setOpen(false)} className="relative h-28 w-20 shrink-0 overflow-hidden bg-burgundy/40">
-                        <Image src={p.gallery[0]} alt={p.name} fill sizes="80px" className="object-cover" />
+                        <Image src={p.scene} alt={p.name} fill sizes="80px" className="object-cover" />
                       </Link>
                       <div className="flex min-w-0 flex-1 flex-col">
                         <div className="flex items-start justify-between gap-2">
