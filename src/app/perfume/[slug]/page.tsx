@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { brand, formatPrice, genderLabel, getPerfume, perfumes, shipping } from "@/data/site";
+import { brand, genderLabel, getPerfume, perfumes, shipping } from "@/data/site";
 import { Gallery } from "@/components/gallery";
 import { Purchase } from "@/components/purchase";
+import { Price } from "@/components/price";
+import { kashida } from "@/lib/kashida";
 import { AddToBag } from "@/components/bag";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -84,13 +86,13 @@ export default async function PerfumePage({ params }: Props) {
           <h1 className="mt-5 font-latin text-[2.6rem] uppercase leading-[0.95] tracking-[0.04em] text-champagne min-[400px]:text-5xl sm:text-7xl xl:text-8xl" dir="ltr" style={{ textAlign: "right" }}>
             <span className="line-mask" style={{ "--i": 0 } as React.CSSProperties}>
               <span>
-                {perfume.nameParts[0]}
-                <em className="font-normal italic text-gold">{perfume.nameParts[1]}</em>
+                <span className="font-extrabold">{perfume.nameParts[0]}</span>
+                <em className="font-extralight italic text-[#ffd2bd]">{perfume.nameParts[1]}</em>
               </span>
             </span>
           </h1>
-          <p className="rise mt-6 font-display text-3xl font-bold text-gold-soft" style={{ animationDelay: "0.3s" }}>
-            {perfume.tagline}
+          <p className="rise mt-6 font-display text-3xl font-bold text-coral" style={{ animationDelay: "0.3s" }}>
+            {kashida(perfume.tagline)}
           </p>
           <p className="rise mt-3 text-xl text-champagne/85" style={{ animationDelay: "0.36s" }}>
             {perfume.short}
@@ -123,8 +125,8 @@ export default async function PerfumePage({ params }: Props) {
                 <p className="text-sm text-champagne/50">النوتات العطرية</p>
                 <ul className="mt-4 flex flex-wrap gap-3">
                   {perfume.notes.map((n) => (
-                    <li key={n} className="flex items-center gap-3 border border-gold/25 px-5 py-2.5 text-lg">
-                      <span className="inline-block size-[6px] rotate-45 bg-gold" />
+                    <li key={n} className="group glass flex items-center gap-3 !rounded-full px-5 py-2.5 text-lg text-rose">
+                      <span className="icon-3d inline-block size-[8px] rotate-45 bg-[#ff2a2f] shadow-[0_0_10px_#ff2a2f]" />
                       {n}
                     </li>
                   ))}
@@ -188,16 +190,16 @@ export default async function PerfumePage({ params }: Props) {
             {others.map((o) => (
               <article key={o.slug} className="reveal group">
                 <Link href={`/perfume/${o.slug}`} className="block">
-                  <div className="relative aspect-[4/5] overflow-hidden">
+                  <div className="frame tilt relative aspect-[4/5]" data-tilt="10">
                     <Image src={o.scene} alt={o.name} fill sizes="(min-width:640px) 30vw, 100vw" className="object-cover transition-transform duration-[1400ms] ease-[var(--ease-silk)] group-hover:scale-[1.04]" />
                   </div>
                   <div className="mt-4 flex items-baseline justify-between">
                     <p className="font-latin text-2xl uppercase tracking-[0.08em]" dir="ltr">
                       {o.name}
                     </p>
-                    <p className="text-champagne/60">{formatPrice(o.price)}</p>
+                    <Price value={o.price} className="text-xl" />
                   </div>
-                  <p className="mt-1 text-gold-soft/80">{o.tagline}</p>
+                  <p className="mt-1 font-medium text-coral">{kashida(o.tagline)}</p>
                 </Link>
                 <AddToBag slug={o.slug} className="mt-4 w-full" />
               </article>

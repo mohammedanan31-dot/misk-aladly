@@ -4,8 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { questions, recommend } from "@/data/finder";
-import { formatPrice, genderLabel } from "@/data/site";
+import { genderLabel } from "@/data/site";
 import { Words } from "./words";
+import { Price } from "./price";
 import { AddToBag } from "./bag";
 
 export function FragranceFinder() {
@@ -19,7 +20,7 @@ export function FragranceFinder() {
     <section id="finder" className="section-light section-in relative scroll-mt-20 overflow-hidden py-24 sm:py-32" aria-labelledby="finder-title">
       <div className="mx-auto max-w-6xl px-5 sm:px-10">
         <div className="text-center">
-          <p className="kicker">Fragrance Finder</p>
+          <p className="kicker"><b>Fragrance</b> Finder</p>
           <h2 id="finder-title" className="mt-5 font-display text-4xl font-bold leading-[1.4] sm:text-6xl">
             <Words text="اكتشف العطر" /> <Words text="الذي يشبهك" wordClass="text-gold" start={2} />
           </h2>
@@ -68,15 +69,15 @@ export function FragranceFinder() {
 
             {result && (
               <div key="result" className="finder-step grid items-center gap-8 sm:grid-cols-[0.8fr_1.2fr]">
-                <div className="frame relative mx-auto aspect-[3/4] w-full max-w-[16rem]" style={{ background: `linear-gradient(180deg, ${result.perfume.theme.from}, ${result.perfume.theme.to})` }}>
+                <div className="frame tilt relative mx-auto aspect-[3/4] w-full max-w-[16rem]" data-tilt="14" style={{ background: `linear-gradient(180deg, ${result.perfume.theme.from}, ${result.perfume.theme.to})` }}>
                   <Image src={result.perfume.scene} alt={result.perfume.name} fill sizes="256px" className="object-cover" />
                 </div>
                 <div>
                   <p className="kicker">عطرك هو</p>
-                  <h3 className="mt-3 font-latin text-4xl uppercase tracking-[0.1em] text-ink sm:text-5xl" dir="ltr" style={{ textAlign: "right" }}>
+                  <h3 className="mt-3 font-latin text-4xl font-extrabold uppercase tracking-[0.06em] text-white sm:text-5xl" dir="ltr" style={{ textAlign: "right" }}>
                     {result.perfume.name}
                   </h3>
-                  <p className="mt-2 text-wine">
+                  <p className="mt-2 font-medium text-coral">
                     {result.perfume.tagline} · {genderLabel[result.perfume.gender]}
                   </p>
                   {result.reasons.length > 0 && (
@@ -85,8 +86,8 @@ export function FragranceFinder() {
                     </p>
                   )}
                   {result.reasons.length === 0 && <p className="mt-5 leading-8 text-ink/75">{result.perfume.description}</p>}
-                  <p className="mt-4 text-sm text-ink/60">النوتات: {result.perfume.notes.join(" · ")}</p>
-                  <p className="mt-4 font-latin text-3xl text-wine">{formatPrice(result.perfume.price)}</p>
+                  <p className="mt-4 text-sm"><span className="text-coral">النوتات:</span> <span className="text-rose">{result.perfume.notes.join(" · ")}</span></p>
+                  <p className="mt-4"><Price value={result.perfume.price} className="text-3xl" /></p>
                   <div className="mt-6 flex flex-wrap gap-3">
                     <AddToBag slug={result.perfume.slug} />
                     <Link href={`/perfume/${result.perfume.slug}`} className="btn-ghost btn-ghost-dark">

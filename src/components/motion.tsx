@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
  *  - `.reveal`, `.mask-reveal`, `.gold-line` get `.is-visible` as they enter the viewport
  *  - `[data-depth]` layers drift against the pointer (hero parallax)
  *  - `.magnetic` buttons lean toward the pointer
+ *  - `.tilt` panels rotate in 3D under the pointer, with a glare that follows it
  */
 export function Motion() {
   const pathname = usePathname();
@@ -43,6 +44,12 @@ export function Motion() {
 
     let px = 0, py = 0, pending = false;
     let magnet: HTMLElement | null = null;
+    let tilted: HTMLElement | null = null;
+    const untilt = (el: HTMLElement | null) => {
+      if (!el) return;
+      el.classList.remove("is-tilting");
+      el.style.transform = "";
+    };
     const apply = () => {
       pending = false;
       const x = px / innerWidth - 0.5, y = py / innerHeight - 0.5;
@@ -58,6 +65,18 @@ export function Motion() {
         pending = true;
         requestAnimationFrame(apply);
       }
+      const t = (e.target as Element | null)?.closest?.<HTMLElement>(".tilt") ?? null;
+      if (tilted && tilted !== t) untilt(tilted);
+      tilted = t;
+      if (t) {
+        const r = t.getBoundingClientRect();
+        const u = (e.clientX - r.left) / r.width, v = (e.clientY - r.top) / r.height;
+        const max = Number(t.dataset.tilt) || 7;
+        t.classList.add("is-tilting");
+        t.style.transform = `perspective(1100px) rotateX(${((0.5 - v) * max).toFixed(2)}deg) rotateY(${((u - 0.5) * max).toFixed(2)}deg) scale(${t.dataset.tiltScale || "1.015"})`;
+        t.style.setProperty("--gx", `${(u * 100).toFixed(1)}%`);
+        t.style.setProperty("--gy", `${(v * 100).toFixed(1)}%`);
+      }
       const m = (e.target as Element | null)?.closest?.<HTMLElement>(".magnetic") ?? null;
       if (magnet && magnet !== m) magnet.style.transform = "";
       magnet = m;
@@ -71,6 +90,8 @@ export function Motion() {
     const onLeave = () => {
       if (magnet) magnet.style.transform = "";
       magnet = null;
+      untilt(tilted);
+      tilted = null;
     };
     addEventListener("pointermove", onMove, { passive: true });
     document.addEventListener("pointerleave", onLeave);

@@ -58,8 +58,8 @@ export function Nav() {
         }`}
       >
         <nav dir="ltr" className={`mx-auto flex w-full max-w-[1360px] items-center justify-between gap-4 px-5 transition-[height] duration-700 sm:px-10 lg:px-[4%] ${docked ? "h-20 sm:h-24" : "h-16"}`} aria-label="الرئيسية">
-          <Link href="/" aria-label="مسك العدلي — الرئيسية" className="font-latin text-sm font-medium tracking-[0.42em] text-white sm:text-lg sm:tracking-[0.5em]">
-            MISK ALADLY
+          <Link href="/" aria-label="مسك العدلي — الرئيسية" className="font-latin text-sm tracking-[0.42em] text-white sm:text-lg sm:tracking-[0.5em]">
+            <b className="font-bold">MISK</b> <span className="font-extralight">ALADLY</span>
           </Link>
 
           <ul className="hidden items-center gap-6 lg:flex">
@@ -80,7 +80,7 @@ export function Nav() {
               aria-expanded={open}
               aria-controls="site-menu"
               aria-label={open ? "إغلاق القائمة" : "فتح القائمة"}
-              className="relative flex size-11 items-center justify-center rounded-full border border-white/70 transition-colors hover:border-[#ff3b35] sm:size-12"
+              className="icon-3d relative flex size-11 items-center justify-center rounded-full border border-white/70 sm:size-12"
             >
               <span className={`absolute h-[1.5px] w-4 bg-white transition-transform duration-500 ${open ? "rotate-45" : "-translate-y-[3px]"}`} />
               <span className={`absolute h-[1.5px] w-4 bg-white transition-transform duration-500 ${open ? "-rotate-45" : "translate-y-[3px]"}`} />

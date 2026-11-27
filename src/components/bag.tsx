@@ -15,6 +15,7 @@ import {
   type BagLine,
   type Customer,
 } from "@/data/site";
+import { Price } from "./price";
 import { WhatsAppIcon } from "./icons";
 
 type Bag = {
@@ -111,7 +112,7 @@ export function BagButton({ className = "" }: { className?: string }) {
     <button
       type="button"
       onClick={() => setOpen(true)}
-      className={`relative flex size-11 items-center justify-center text-champagne transition-colors duration-500 hover:text-gold-soft ${className}`}
+      className={`icon-3d relative flex size-11 items-center justify-center text-champagne hover:text-white ${className}`}
       aria-label={`حقيبة التسوق${count ? `، ${count} عبوة` : ""}`}
     >
       <BagIcon className="size-6" />
@@ -214,7 +215,7 @@ function BagDrawer() {
       >
         <header className="flex items-center justify-between border-b border-gold/15 px-6 py-5">
           <div>
-            <p className="font-latin text-[11px] uppercase tracking-[0.4em] text-gold-soft/70">Your Bag</p>
+            <p className="font-latin text-[11px] uppercase tracking-[0.4em] text-coral"><b className="font-bold text-white">Your</b> <span className="font-light">Bag</span></p>
             <h2 className="mt-1 font-display text-2xl font-bold">حقيبة التسوق</h2>
           </div>
           <button type="button" onClick={() => setOpen(false)} className="flex size-11 items-center justify-center border border-champagne/15 text-xl text-champagne/80 transition-colors hover:border-gold/50 hover:text-gold-soft" aria-label="إغلاق الحقيبة">
@@ -245,10 +246,10 @@ function BagDrawer() {
                       <div className="flex min-w-0 flex-1 flex-col">
                         <div className="flex items-start justify-between gap-2">
                           <div>
-                            <p className="font-latin text-lg uppercase tracking-[0.1em]" dir="ltr" style={{ textAlign: "right" }}>
+                            <p className="font-latin text-lg font-bold uppercase tracking-[0.08em]" dir="ltr" style={{ textAlign: "right" }}>
                               {p.name}
                             </p>
-                            <p className="text-sm text-champagne/55">
+                            <p className="text-sm text-rose">
                               {genderLabel[p.gender]} · {p.size} مل
                             </p>
                           </div>
@@ -258,7 +259,7 @@ function BagDrawer() {
                         </div>
                         <div className="mt-auto flex items-center justify-between pt-3">
                           <Qty value={l.qty} onChange={(q) => setQty(p.slug, q)} label={p.name} />
-                          <p className="font-latin text-lg text-gold-soft">{formatPrice(p.price * l.qty)}</p>
+                          <Price value={p.price * l.qty} className="text-lg" />
                         </div>
                       </div>
                     </li>
@@ -282,11 +283,11 @@ function BagDrawer() {
               <dl className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <dt className="text-champagne/60">المجموع ({t.count} عبوة)</dt>
-                  <dd className="font-latin text-2xl text-gold-soft">{formatPrice(t.subtotal)}</dd>
+                  <dd><Price value={t.subtotal} className="text-2xl" /></dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-champagne/60">نقاط مسك العدلي</dt>
-                  <dd className="text-champagne">+{t.points} نقطة</dd>
+                  <dd className="font-bold text-coral">+{t.points} نقطة</dd>
                 </div>
                 <div className="flex justify-between gap-4">
                   <dt className="text-champagne/60">الشحن</dt>

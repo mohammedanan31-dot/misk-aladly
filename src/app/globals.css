@@ -12,6 +12,9 @@
   --color-gold: #f0a65a; /* warm amber light */
   --color-gold-soft: #ffc690;
   --color-champagne: #fff4ec; /* main text */
+  --color-amber: #ffc061; /* prices */
+  --color-coral: #ff7a62; /* labels, taglines */
+  --color-rose: #ffb9a6; /* notes, secondary details */
   --color-cream: #fff4ec;
   --color-ivory: #fff8f3;
   --color-ink: #fff4ec;
@@ -694,8 +697,8 @@ body::after {
       animation-range: entry 0% cover 45%;
     }
     @keyframes open-up {
-      from { clip-path: inset(12% 16% 12% 16% round 2rem); }
-      to { clip-path: inset(0 0 0 0 round 0); }
+      from { clip-path: inset(12% 16% 12% 16% round 2rem); transform: perspective(1400px) rotateX(22deg) scale(0.9); }
+      to { clip-path: inset(0 0 0 0 round 2rem); transform: none; }
     }
     .hero-exit {
       animation: hero-exit linear both;
@@ -767,5 +770,145 @@ body::after {
       radial-gradient(60% 50% at 70% 30%, rgba(160, 20, 20, 0.45), transparent 70%),
       radial-gradient(50% 40% at 20% 80%, rgba(255, 120, 60, 0.14), transparent 70%),
       #1f0303;
+  }
+}
+
+@layer components {
+  /* ==========================================================================
+     Colour & weight accents
+     ========================================================================== */
+  .price {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35em;
+    white-space: nowrap;
+    font-family: var(--font-latin);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .price-num {
+    background: linear-gradient(180deg, #ffe6b0 0%, #ffc061 45%, #f08a2c 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 18px rgba(255, 170, 60, 0.25));
+  }
+  .price-cur {
+    font-family: var(--font-sans);
+    font-size: 0.48em;
+    font-weight: 500;
+    color: var(--color-amber);
+    opacity: 0.85;
+  }
+  .text-coral { color: var(--color-coral); }
+  .text-rose { color: var(--color-rose); }
+  .text-amber { color: var(--color-amber); }
+  .kicker { font-weight: 300; direction: ltr; unicode-bidi: isolate; }
+  .kicker b { font-weight: 700; color: #fff; }
+
+  /* ==========================================================================
+     3D: pointer tilt with a moving glare (banners, cards, photos)
+     ========================================================================== */
+  .tilt {
+    transform-style: preserve-3d;
+    transition: transform 0.9s var(--ease-out-expo), box-shadow 0.9s var(--ease-out-expo);
+    will-change: transform;
+  }
+  .tilt::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(40% 40% at var(--gx, 50%) var(--gy, 0%), rgba(255, 220, 190, 0.22), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-silk);
+  }
+  .tilt.is-tilting::after {
+    opacity: 1;
+  }
+  .tilt.is-tilting {
+    transition: transform 0.25s linear, box-shadow 0.6s;
+    box-shadow: 0 50px 90px -40px rgba(0, 0, 0, 0.95), 0 0 50px -12px rgba(255, 50, 30, 0.45);
+  }
+
+  /* 3D entrances: panels swing up out of the page */
+  .reveal-3d {
+    transform: perspective(1200px) rotateX(24deg) translateY(70px) scale(0.96);
+    transform-origin: 50% 100%;
+  }
+  .reveal-flip {
+    transform: perspective(1200px) rotateY(-28deg) translateX(-40px);
+    transform-origin: 0 50%;
+  }
+  .reveal-flip-r {
+    transform: perspective(1200px) rotateY(28deg) translateX(40px);
+    transform-origin: 100% 50%;
+  }
+  .reveal.reveal-3d.is-visible,
+  .reveal.reveal-flip.is-visible,
+  .reveal.reveal-flip-r.is-visible {
+    transform: none;
+  }
+
+  /* ==========================================================================
+     3D icon hovers
+     ========================================================================== */
+  .icon-3d {
+    transition: transform 0.9s var(--ease-out-expo), box-shadow 0.5s, border-color 0.5s, color 0.5s;
+    transform-style: preserve-3d;
+  }
+  .icon-3d:hover,
+  .group:hover > .icon-3d {
+    transform: perspective(300px) rotateY(360deg) translateZ(10px) scale(1.08);
+    border-color: #ff3b35;
+    box-shadow: 0 0 22px -2px rgba(255, 40, 40, 0.7);
+  }
+  .icon-tip {
+    display: inline-block;
+    transition: transform 0.8s var(--ease-out-expo), color 0.5s, text-shadow 0.5s;
+  }
+  .group:hover .icon-tip,
+  .icon-tip:hover {
+    transform: perspective(240px) rotateX(360deg) scale(1.15);
+    color: #fff;
+    text-shadow: 0 0 16px rgba(255, 70, 50, 0.9);
+  }
+  .logo-3d {
+    transition: transform 1.2s var(--ease-out-expo), filter 0.6s;
+  }
+  .logo-3d:hover {
+    transform: perspective(600px) rotateY(360deg);
+    filter: drop-shadow(0 0 22px rgba(255, 170, 90, 0.6));
+  }
+  .pill {
+    transform-style: preserve-3d;
+  }
+  .pill:hover {
+    transform: perspective(500px) rotateX(14deg) translateY(-3px);
+    box-shadow: 0 14px 26px -12px rgba(255, 40, 30, 0.8);
+  }
+  .glass,
+  .frame {
+    transition: transform 0.9s var(--ease-out-expo), box-shadow 0.9s var(--ease-out-expo), border-color 0.6s;
+  }
+  .glass:hover {
+    border-color: rgba(255, 90, 60, 0.55);
+  }
+
+  /* hero bottle breathes in 3D */
+  @keyframes bottle-sway {
+    0%, 100% { transform: perspective(1200px) rotateY(-4deg) translateY(0); }
+    50% { transform: perspective(1200px) rotateY(4deg) translateY(-1.2%); }
+  }
+  .bottle-sway {
+    animation: bottle-sway 9s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tilt, .icon-3d, .icon-tip, .logo-3d, .pill { transition: none !important; transform: none !important; }
+    .reveal-3d, .reveal-flip, .reveal-flip-r { transform: none; }
+    .bottle-sway { animation: none; }
   }
 }

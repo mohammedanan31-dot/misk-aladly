@@ -30,15 +30,17 @@ export function Experience() {
     <section id="experience" className="section-in relative overflow-hidden bg-night py-24 sm:py-32" aria-labelledby="exp-title">
       <div className="mx-auto max-w-7xl px-5 sm:px-10">
         <div className="max-w-2xl">
-          <p className="kicker reveal">The Experience · 03</p>
+          <p className="kicker reveal">The <b>Experience</b> · 03</p>
           <h2 id="exp-title" className="mt-6 font-display text-4xl font-bold leading-[1.45] sm:text-6xl">
             <Words text="رذاذٌ واحد" /> <Words text="يكفي ليتذكّرك الجميع" wordClass="text-gold" start={2} />
           </h2>
         </div>
       </div>
-      <div className="open-up relative mx-auto mt-14 aspect-[16/10] w-[94vw] max-w-[1360px] overflow-hidden rounded-[2rem] border border-[rgba(255,90,60,0.3)] sm:aspect-[9/4]">
+      <div className="tilt relative mx-auto mt-14 w-[94vw] max-w-[1360px] rounded-[2rem]" data-tilt="5">
+      <div className="open-up relative aspect-[16/10] w-full overflow-hidden rounded-[2rem] border border-[rgba(255,90,60,0.3)] sm:aspect-[9/4]">
         <Image src="/scenes/panorama.webp" alt="قارورة Icon من مسك العدلي على مخمل خمري بين حروف MISK ALADLY الذهبية" fill sizes="100vw" className="parallax object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-night/70 via-transparent to-night/30" />
+      </div>
       </div>
       <div className="mx-auto mt-12 grid max-w-7xl gap-8 px-5 sm:grid-cols-3 sm:px-10">
         {[
@@ -46,8 +48,8 @@ export function Experience() {
           { k: "100 مل", v: "حجم سخي لكل عطر من عطور المجموعة." },
           { k: "جاهز للإهداء", v: "كل عطر يصلك في علبته الخمرية الفاخرة بشرائط ذهبية." },
         ].map((x, i) => (
-          <div key={x.k} className="reveal glass p-7" style={{ transitionDelay: `${i * 100}ms` }}>
-            <p className="font-display text-2xl font-bold text-gold-soft">{x.k}</p>
+          <div key={x.k} className="reveal reveal-3d glass tilt p-7" data-tilt="10" style={{ transitionDelay: `${i * 120}ms` }}>
+            <p className="font-display text-2xl font-bold text-amber">{x.k}</p>
             <p className="mt-3 leading-8 text-champagne/70">{x.v}</p>
           </div>
         ))}
@@ -66,7 +68,7 @@ export function Story() {
       <Image src="/brand/logo.webp" alt="" aria-hidden="true" width={491} height={439} className="pointer-events-none absolute -left-24 top-10 w-[34rem] max-w-none opacity-[0.05] sm:-left-10" />
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-10 lg:grid-cols-[1.2fr_1fr] lg:gap-24">
         <div>
-          <p className="kicker reveal">Our Story · 04</p>
+          <p className="kicker reveal">Our <b>Story</b> · 04</p>
           <h2 id="story-title" className="sr-only">حكايتنا</h2>
           <p className="mt-8 font-display text-[1.95rem] font-bold leading-[1.75] text-champagne sm:text-5xl sm:leading-[1.65]">
             {manifesto.split(" ").map((w, i) => (
@@ -82,11 +84,11 @@ export function Story() {
               { k: "فن العطر", v: "تركيبات مستوردة، اخترناها بعناية لتدوم وتترك أثرًا." },
               { k: "التفرّد", v: "لكل عطر مزاجه وحكايته، ولكل شخص توقيعه." },
             ].map((x, i) => (
-              <div key={x.k} className="reveal glass p-6" style={{ transitionDelay: `${i * 100}ms` }}>
-                <p className="font-latin text-sm text-gold/70" dir="ltr" style={{ textAlign: "right" }}>
-                  0{i + 1}
+              <div key={x.k} className="group reveal reveal-3d glass tilt p-6" data-tilt="12" style={{ transitionDelay: `${i * 120}ms` }}>
+                <p className="font-latin text-sm" dir="ltr" style={{ textAlign: "right" }}>
+                  <span className="icon-tip font-extrabold text-coral">0{i + 1}</span>
                 </p>
-                <p className="mt-2 font-display text-2xl font-bold text-gold-soft">{x.k}</p>
+                <p className="mt-2 font-display text-2xl font-bold text-amber">{x.k}</p>
                 <p className="mt-2 leading-8 text-champagne/70">{x.v}</p>
               </div>
             ))}
@@ -94,13 +96,13 @@ export function Story() {
         </div>
 
         <figure className="reveal reveal-scale">
-          <div className="frame mask-reveal relative aspect-[4/5]">
+          <div className="frame tilt mask-reveal relative aspect-[4/5]" data-tilt="8">
             <Image src="/scenes/sunset-dome.webp" alt="قارورة مسك العدلي ونقش الطاووس عند الغروب" fill sizes="(min-width:1024px) 40vw, 100vw" className="object-cover" />
           </div>
           <figcaption className="mt-8 flex items-start gap-5">
-            <Image src="/brand/logo.webp" alt="" aria-hidden="true" width={491} height={439} className="h-16 w-auto shrink-0" />
+            <Image src="/brand/logo.webp" alt="" aria-hidden="true" width={491} height={439} className="logo-3d h-16 w-auto shrink-0" />
             <p className="leading-8 text-champagne/75">
-              <span className="block font-display text-xl font-bold text-gold-soft">الطاووس</span>
+              <span className="block font-display text-xl font-bold text-coral">الطاووس</span>
               رمزنا للاعتزاز والرقيّ — يزيّن كل قارورة، ويحمل توقيع مسك العدلي.
             </p>
           </figcaption>
@@ -117,27 +119,27 @@ export function Packaging() {
       <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-10 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
         <div className="lg:order-2">
           <div className="grid grid-cols-[1.4fr_1fr] gap-4 sm:gap-6">
-            <div className="mask-reveal frame relative row-span-2 aspect-[3/4]">
+            <div className="mask-reveal frame tilt relative row-span-2 aspect-[3/4]" data-tilt="9">
               <Image src="/scenes/giftbag.webp" alt="كيس هدايا مسك العدلي الخمري بشرائط ذهبية وشعار الطاووس" fill sizes="(min-width:1024px) 32vw, 58vw" className="object-cover object-[40%_45%]" />
             </div>
-            <div className="mask-reveal frame relative aspect-square" style={{ transitionDelay: "120ms" }}>
+            <div className="mask-reveal frame tilt relative aspect-square" data-tilt="14" style={{ transitionDelay: "120ms" }}>
               <Image src="/scenes/giftbag.webp" alt="" aria-hidden="true" fill sizes="(min-width:1024px) 20vw, 40vw" className="scale-[2.1] object-cover object-[30%_58%]" />
             </div>
-            <div className="mask-reveal frame relative aspect-square" style={{ transitionDelay: "240ms" }}>
+            <div className="mask-reveal frame tilt relative aspect-square" data-tilt="14" style={{ transitionDelay: "240ms" }}>
               <Image src="/scenes/giftbag.webp" alt="" aria-hidden="true" fill sizes="(min-width:1024px) 20vw, 40vw" className="scale-[2.2] object-cover object-[22%_14%]" />
             </div>
           </div>
         </div>
         <div className="reveal reveal-right lg:order-1">
-          <p className="kicker">The Gift · 05</p>
+          <p className="kicker">The <b>Gift</b> · 05</p>
           <h2 id="pack-title" className="mt-6 font-display text-4xl font-bold leading-[1.45] sm:text-6xl">
             <Words text="الفخامة تبدأ" /> <Words text="قبل أول رشة" wordClass="text-gold" start={2} />
           </h2>
           <p className="mt-6 max-w-md text-xl leading-9 text-ink/75">كل عطر يصلك في علبته الخمرية الفاخرة بشرائط ذهبية — هدية تليق بمن تحب.</p>
           <ul className="mt-8 space-y-3 text-ink/80">
             {["علبة خمرية بشعار الطاووس الذهبي", "شرائط ذهبية جاهزة للإهداء", `توصيل لجميع المحافظات خلال ${shipping.days}`].map((t) => (
-              <li key={t} className="flex items-center gap-4">
-                <span className="inline-block size-[7px] rounded-full bg-[#ff2a2f] shadow-[0_0_10px_#ff2a2f]" />
+              <li key={t} className="group flex items-center gap-4">
+                <span className="icon-3d inline-block size-[9px] rotate-45 border border-[#ff4a3d] bg-[#ff2a2f] shadow-[0_0_10px_#ff2a2f]" />
                 {t}
               </li>
             ))}
@@ -162,15 +164,15 @@ export function Loyalty() {
     <section id="loyalty" className="section-in relative scroll-mt-16 overflow-hidden bg-espresso py-24 sm:py-36" aria-labelledby="loyalty-title">
       <div className="mx-auto grid max-w-7xl items-center gap-16 px-5 sm:px-10 lg:grid-cols-2 lg:gap-24">
         <div className="reveal">
-          <p className="kicker">Misk Points · 06</p>
+          <p className="kicker">Misk <b>Points</b> · 06</p>
           <h2 id="loyalty-title" className="mt-6 font-display text-4xl font-bold leading-[1.45] sm:text-6xl">
             <Words text="كل عبوة" /> <Words text="تحمل مكافأة" wordClass="text-gold" start={2} />
           </h2>
           <ol className="mt-10 space-y-0">
             {steps.map((s) => (
-              <li key={s.n} className="grid grid-cols-[3.5rem_1fr] gap-4 border-t border-gold/15 py-6 last:border-b">
-                <span className="font-latin text-3xl text-gold/80" dir="ltr">
-                  {s.n}
+              <li key={s.n} className="group grid grid-cols-[3.5rem_1fr] gap-4 border-t border-gold/15 py-6 last:border-b">
+                <span className="font-latin text-3xl font-extralight text-coral" dir="ltr">
+                  <span className="icon-tip">{s.n}</span>
                 </span>
                 <div>
                   <p className="font-display text-2xl font-bold">{s.t}</p>
@@ -183,24 +185,30 @@ export function Loyalty() {
 
         {/* membership card */}
         <div className="reveal reveal-scale">
-          <div className="float relative mx-auto aspect-[1.6/1] w-full max-w-lg overflow-hidden rounded-[1.5rem] border border-[rgba(255,110,80,0.5)] bg-[linear-gradient(135deg,#b3141a_0%,#5a0707_45%,#220303_100%)] p-6 shadow-[0_50px_100px_-40px_rgba(0,0,0,0.9)] sm:p-9">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_80%_at_85%_10%,rgba(212,177,123,0.25),transparent_70%)]" />
-            <Image src="/brand/logo.webp" alt="" aria-hidden="true" width={491} height={439} className="pointer-events-none absolute -bottom-10 -left-8 w-56 opacity-10" />
-            <div className="relative flex h-full flex-col justify-between">
-              <div className="flex items-start justify-between">
-                <Image src="/brand/logo.webp" alt="مسك العدلي" width={491} height={439} className="h-12 w-auto sm:h-14" />
-                <span className="font-latin text-[10px] uppercase tracking-[0.45em] text-gold-soft/80" dir="ltr">
-                  Misk Points
-                </span>
-              </div>
-              <div>
-                <p className="font-latin text-5xl text-gold sm:text-6xl" dir="ltr" style={{ textAlign: "right" }}>
-                  {points.perBottle}
-                  <span className="ms-2 font-sans text-lg text-champagne">نقطة / عبوة</span>
-                </p>
-                <p className="mt-2 text-sm text-champagne/70">
-                  {points.redeem} نقطة = خصم {points.discount} جنيه
-                </p>
+          <div className="float">
+            <div
+              className="tilt relative mx-auto aspect-[1.6/1] w-full max-w-lg overflow-hidden rounded-[1.5rem] border border-[rgba(255,110,80,0.5)] bg-[linear-gradient(135deg,#b3141a_0%,#5a0707_45%,#220303_100%)] p-6 shadow-[0_50px_100px_-40px_rgba(0,0,0,0.9)] sm:p-9"
+              data-tilt="16"
+              data-tilt-scale="1.03"
+            >
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_80%_at_85%_10%,rgba(255,190,140,0.25),transparent_70%)]" />
+              <Image src="/brand/logo.webp" alt="" aria-hidden="true" width={491} height={439} className="pointer-events-none absolute -bottom-10 -left-8 w-56 opacity-10" />
+              <div className="relative flex h-full flex-col justify-between">
+                <div className="flex items-start justify-between">
+                  <Image src="/brand/logo.webp" alt="مسك العدلي" width={491} height={439} className="logo-3d h-12 w-auto sm:h-14" />
+                  <span className="font-latin text-[10px] uppercase tracking-[0.45em] text-rose" dir="ltr">
+                    <b className="font-bold text-white">Misk</b> <span className="font-light">Points</span>
+                  </span>
+                </div>
+                <div>
+                  <p className="font-latin text-5xl font-extrabold text-amber sm:text-6xl" dir="ltr" style={{ textAlign: "right" }}>
+                    {points.perBottle}
+                    <span className="ms-2 font-sans text-lg font-medium text-white">نقطة / عبوة</span>
+                  </p>
+                  <p className="mt-2 text-sm text-rose">
+                    {points.redeem} نقطة = خصم <span className="font-bold text-amber">{points.discount} جنيه</span>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -252,7 +260,7 @@ export function Faq() {
     <section id="faq" className="section-light section-in scroll-mt-16 py-24 sm:py-32" aria-labelledby="faq-title">
       <div className="mx-auto grid max-w-7xl gap-14 px-5 sm:px-10 lg:grid-cols-[1fr_1.4fr]">
         <div className="reveal reveal-scale">
-          <p className="kicker">Questions · 07</p>
+          <p className="kicker"><b>Questions</b> · 07</p>
           <h2 id="faq-title" className="mt-6 font-display text-4xl font-bold leading-[1.4] sm:text-5xl">
             <Words text="قبل أن" /> <Words text="تختار" wordClass="text-gold" start={2} />
           </h2>
@@ -264,10 +272,10 @@ export function Faq() {
         </div>
         <div className="border-t border-ink/15">
           {faqs.map((f) => (
-            <details key={f.q} className="reveal group border-b border-ink/15">
+            <details key={f.q} className="reveal reveal-3d group border-b border-ink/15">
               <summary className="flex cursor-pointer items-center justify-between gap-4 py-6 font-display text-xl font-bold sm:text-2xl">
                 {f.q}
-                <span className="faq-plus flex size-9 shrink-0 items-center justify-center rounded-full border border-[rgba(255,90,60,0.5)] font-sans text-xl text-wine transition-transform duration-700 ease-[var(--ease-silk)]">
+                <span className="faq-plus icon-3d flex size-9 shrink-0 items-center justify-center rounded-full border border-[rgba(255,90,60,0.5)] font-sans text-xl text-coral">
                   +
                 </span>
               </summary>
@@ -285,7 +293,7 @@ export function FinalCta() {
   return (
     <section id="contact" className="section-in relative isolate mx-auto my-10 w-[94vw] max-w-[1360px] overflow-hidden rounded-[2rem] border border-[rgba(255,90,60,0.35)] bg-burgundy py-28 text-center sm:py-36" aria-labelledby="final-title">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(50%_60%_at_50%_100%,rgba(197,164,109,0.22),transparent_70%)]" />
-      <Image src="/brand/logo.webp" alt="" aria-hidden="true" width={491} height={439} className="reveal mx-auto h-24 w-auto sm:h-28" />
+      <Image src="/brand/logo.webp" alt="" aria-hidden="true" width={491} height={439} className="reveal logo-3d mx-auto h-24 w-auto sm:h-28" />
       <div className="mx-auto mt-10 max-w-3xl px-5">
         <h2 id="final-title" className="font-display text-5xl font-bold leading-[1.4] sm:text-7xl">
           <Words text="اترك أثرًا" /> <Words text="لا يُنسى" wordClass="text-gold" start={2} />

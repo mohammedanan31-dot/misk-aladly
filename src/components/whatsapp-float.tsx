@@ -21,7 +21,7 @@ export function WhatsAppFloat() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="تواصل عبر واتساب"
-      className={`btn-primary magnetic fixed bottom-5 left-5 z-30 !min-h-0 size-14 !rounded-full !p-0 transition-[opacity,transform] duration-500 ${
+      className={`btn-primary icon-3d fixed bottom-5 left-5 z-30 !min-h-0 size-14 !rounded-full !p-0 transition-[opacity,transform] duration-500 ${
         shown ? "opacity-100" : "pointer-events-none translate-y-4 opacity-0"
       } ${onProduct ? "hidden lg:inline-flex" : ""}`}
     >

@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { formatPrice, genderLabel, getPerfume, type Perfume } from "@/data/site";
+import { genderLabel, getPerfume, type Perfume } from "@/data/site";
+import { Price } from "./price";
 import { AddToBag } from "./bag";
 
 /** Order of the selector pills, as in the approved design. */
@@ -36,8 +37,11 @@ export function Hero() {
 
   return (
     <section className="relative px-[3vw] pb-10 pt-4 sm:pt-6" aria-roledescription="carousel" aria-label="عطور مسك العدلي">
+      <div className="hero-exit mx-auto w-full max-w-[1360px]">
       <div
-        className="hero-card hero-exit mx-auto w-full max-w-[1360px] lg:h-[min(92svh,920px)] lg:min-h-[640px]"
+        className="hero-card tilt lg:h-[min(92svh,920px)] lg:min-h-[640px]"
+        data-tilt="3"
+        data-tilt-scale="1"
         dir="ltr"
         onPointerEnter={() => setHover(true)}
         onPointerLeave={() => setHover(false)}
@@ -72,36 +76,38 @@ export function Hero() {
           {/* the bottle on its stage */}
           <div className="order-2 lg:absolute lg:left-[61%] lg:top-[9%] lg:h-[73%] lg:w-auto lg:-translate-x-1/2" style={{ aspectRatio: "495 / 673" }}>
             <div data-depth="12" className="hero-depth relative mx-auto h-full w-[78%] max-w-[26rem] sm:w-[60%] lg:w-full lg:max-w-none" style={{ aspectRatio: "495 / 673" }}>
-              {ITEMS.map((x, i) => (
-                <div key={x.slug} className="hero-scene hero-shot absolute inset-0" data-state={i === active ? "in" : "out"} aria-hidden={i !== active}>
-                  <Image src={x.scene} alt={i === active ? `قارورة ${x.name} من مسك العدلي` : ""} fill priority={i === 0} sizes="(min-width:1024px) 36vw, 78vw" className="object-cover" />
-                </div>
-              ))}
+              <div className="bottle-sway absolute inset-0">
+                {ITEMS.map((x, i) => (
+                  <div key={x.slug} className="hero-scene hero-shot absolute inset-0" data-state={i === active ? "in" : "out"} aria-hidden={i !== active}>
+                    <Image src={x.scene} alt={i === active ? `قارورة ${x.name} من مسك العدلي` : ""} fill priority={i === 0} sizes="(min-width:1024px) 36vw, 78vw" className="object-cover" />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* name + line */}
           <div data-depth="-6" className="hero-depth order-1 text-center lg:absolute lg:left-[8%] lg:top-[39%] lg:max-w-[44%] lg:text-left">
-            <h1 key={p.slug} className="hero-title font-latin text-[11vw] font-semibold uppercase leading-[0.95] tracking-[0.01em] text-white sm:text-7xl lg:text-[clamp(2.8rem,4.8vw,5.2rem)]" aria-live="polite">
-              {p.name.split(" ").map((word, w, all) => {
-                const offset = all.slice(0, w).join(" ").length + (w ? 1 : 0);
+            <h1 key={p.slug} className="hero-title font-latin text-[11vw] uppercase leading-[0.95] tracking-[0.01em] text-white sm:text-7xl lg:text-[clamp(2.8rem,4.8vw,5.2rem)]" aria-live="polite">
+              {/* heavy first half, hairline second half */}
+              {p.nameParts.map((part, w) => {
+                const offset = p.nameParts.slice(0, w).join("").length;
                 return (
-                  <span key={w} className="inline-block whitespace-nowrap">
-                    {word.split("").map((c, k) => (
+                  <span key={w} className={`inline-block whitespace-pre ${w === 0 ? "font-extrabold" : "font-extralight text-[#ffd2bd]"}`}>
+                    {part.split("").map((c, k) => (
                       <span key={k} className="ch" style={{ "--i": offset + k } as React.CSSProperties}>
                         {c}
                       </span>
                     ))}
-                    {w < all.length - 1 ? " " : ""}
                   </span>
                 );
               })}
             </h1>
             <div key={`t-${p.slug}`} className="fade-swap mt-5 flex items-start justify-center gap-5 lg:justify-start" style={{ animationDelay: "0.25s" }}>
-              <span className="mt-3 hidden h-px w-20 shrink-0 bg-white/80 sm:block" />
+              <span className="mt-3 hidden h-px w-20 shrink-0 bg-gradient-to-r from-white/30 to-[#ff5a3c] sm:block" />
               <div>
-                <p className="font-latin text-lg font-light leading-snug text-white/95 sm:text-2xl lg:max-w-[17rem]">{p.en}</p>
-                <p className="mt-2 text-base text-white/60" dir="rtl">
+                <p className="font-latin text-lg font-light italic leading-snug text-white/95 sm:text-2xl lg:max-w-[17rem]">{p.en}</p>
+                <p className="mt-2 text-base font-medium text-coral" dir="rtl">
                   {p.short}
                 </p>
               </div>
@@ -111,15 +117,18 @@ export function Hero() {
           {/* details */}
           <div key={`d-${p.slug}`} className="fade-swap order-3 flex flex-wrap items-end justify-between gap-4 lg:absolute lg:right-[4%] lg:top-[43%] lg:block lg:w-[15.5rem]" style={{ animationDelay: "0.35s" }}>
             <div>
-              <Link href={`/perfume/${p.slug}`} className="link-line font-latin text-xl text-white/90 hover:text-white">
+              <Link href={`/perfume/${p.slug}`} className="link-line font-latin text-sm font-light uppercase tracking-[0.35em] text-coral hover:text-white">
                 Details
               </Link>
-              <p className="mt-1 font-latin text-4xl font-semibold text-white sm:text-[2.6rem]" dir="rtl" style={{ textAlign: "left" }}>
-                {formatPrice(p.price)}
+              <p className="mt-2">
+                <Price value={p.price} className="text-4xl sm:text-[2.8rem]" />
               </p>
-              <p className="mt-2 font-latin text-lg text-white/85">
-                {p.size} ml <span className="mx-1 text-white/40">·</span>
-                <span dir="rtl">{genderLabel[p.gender]}</span>
+              <p className="mt-2 font-latin text-lg">
+                <span className="font-semibold text-white">{p.size}</span> <span className="font-light text-rose">ml</span>
+                <span className="mx-2 text-white/30">·</span>
+                <span dir="rtl" className="text-rose">
+                  {genderLabel[p.gender]}
+                </span>
               </p>
             </div>
             <AddToBag slug={p.slug} label="Add to Cart +" className="mt-0 w-full sm:w-auto lg:mt-5 lg:w-full" />
@@ -136,6 +145,7 @@ export function Hero() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatPrice, genderLabel, perfumes } from "@/data/site";
+import { genderLabel, perfumes } from "@/data/site";
+import { kashida } from "@/lib/kashida";
+import { Price } from "./price";
 import { AddToBag } from "./bag";
 import { Words } from "./words";
 import { ShowcaseTrack } from "./showcase-track";
@@ -15,7 +17,7 @@ export function Collection() {
       <div className="mx-auto max-w-7xl px-5 sm:px-10">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
-            <p className="kicker">The Collection · 01</p>
+            <p className="kicker">The <b>Collection</b> · 01</p>
             <h2 id="collection-title" className="mt-6 font-display text-5xl font-bold leading-[1.35] sm:text-7xl">
               <Words text="أربعة عطور،" /> <Words text="أربع شخصيات" wordClass="text-gold" start={2} />
             </h2>
@@ -41,41 +43,44 @@ export function Collection() {
                 <div className="mx-auto grid max-w-7xl items-center lg:min-h-[80svh] lg:grid-cols-2 lg:gap-20 lg:px-10 lg:py-24">
                   {/* photograph */}
                   <Link href={`/perfume/${p.slug}`} className={`chapter-photo group block ${flip ? "lg:order-2" : ""}`} aria-label={`اكتشف ${p.name}`}>
+                    <div className="tilt relative overflow-hidden lg:rounded-[1.5rem]" data-tilt="9">
                     <div className="mask-reveal relative aspect-[4/5] overflow-hidden lg:rounded-[1.5rem]">
                       <Image src={p.photo} alt={`${p.name} — مسك العدلي`} fill sizes="(min-width:1024px) 42vw, (min-width:640px) 60vw, 86vw" className="object-cover" />
-                      <span className="absolute start-4 top-4 bg-night/55 px-3 py-1 text-sm text-champagne backdrop-blur-md">{genderLabel[p.gender]}</span>
+                      <span className="absolute start-4 top-4 rounded-full border border-white/25 bg-night/55 px-3 py-1 text-sm text-rose backdrop-blur-md">{genderLabel[p.gender]}</span>
+                    </div>
                     </div>
                   </Link>
 
                   {/* words */}
                   <div className={`p-6 sm:p-8 lg:p-0 ${flip ? "lg:order-1" : ""}`}>
                     <div className={`reveal ${flip ? "reveal-left" : "reveal-right"}`}>
-                      <p className="flex items-center gap-4 font-latin text-sm tracking-[0.4em] text-[var(--accent)]" dir="ltr" style={{ justifyContent: "flex-end" }}>
-                        <span>0{i + 1} / 04</span>
+                      <p className="flex items-center gap-4 font-latin text-sm tracking-[0.4em]" dir="ltr" style={{ justifyContent: "flex-end" }}>
+                        <span className="icon-tip font-bold text-white">0{i + 1}</span>
+                        <span className="font-extralight text-coral">/ 04</span>
                       </p>
                       <h3 className="mt-4 font-latin text-[2.15rem] uppercase leading-none tracking-[0.04em] min-[400px]:text-[2.5rem] sm:text-6xl lg:text-[clamp(3rem,4.6vw,4.8rem)] lg:tracking-[0.04em]" dir="ltr" style={{ textAlign: "right" }}>
-                        {p.nameParts[0]}
-                        <em className="font-normal italic text-[var(--accent)]">{p.nameParts[1]}</em>
+                        <span className="font-extrabold">{p.nameParts[0]}</span>
+                        <em className="font-extralight italic text-[#ffd2bd]">{p.nameParts[1]}</em>
                       </h3>
-                      <p className="mt-5 font-display text-2xl font-bold text-[var(--accent)] sm:text-3xl">{p.tagline}</p>
-                      <div className="my-6 h-px w-24 bg-[var(--accent)] opacity-50" />
+                      <p className="mt-5 font-display text-2xl font-bold text-coral sm:text-3xl">{kashida(p.tagline)}</p>
+                      <div className="my-6 h-px w-24 bg-gradient-to-l from-transparent to-[#ff5a3c]" />
                       <p className="text-lg leading-8 opacity-85 lg:max-w-md lg:text-xl lg:leading-9">{p.description}</p>
 
                       <dl className="mt-7 grid grid-cols-2 gap-x-6 gap-y-4 border-y border-[var(--line)] py-5 text-base">
                         <div>
-                          <dt className="text-sm opacity-60">الشخصية</dt>
-                          <dd className="mt-1">{p.mood}</dd>
+                          <dt className="text-sm text-coral/90">الشخصية</dt>
+                          <dd className="mt-1 font-medium text-white">{p.mood}</dd>
                         </div>
                         <div>
-                          <dt className="text-sm opacity-60">النوتات</dt>
-                          <dd className="mt-1">{p.notes.join(" · ")}</dd>
+                          <dt className="text-sm text-coral/90">النوتات</dt>
+                          <dd className="mt-1 text-rose">{p.notes.join(" · ")}</dd>
                         </div>
                       </dl>
 
                       <div className="mt-7 flex flex-wrap items-end justify-between gap-4">
                         <p>
-                          <span className="block text-sm opacity-60">{p.size} مل</span>
-                          <span className="font-latin text-3xl sm:text-4xl">{formatPrice(p.price)}</span>
+                          <span className="block text-sm text-rose/80">{p.size} مل</span>
+                          <Price value={p.price} className="text-3xl sm:text-[2.6rem]" />
                         </p>
                       </div>
                       <div className="mt-6 flex flex-col gap-3 sm:flex-row">

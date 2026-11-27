@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { formatPrice, orderMessage, points, whatsappLink, type Perfume } from "@/data/site";
+import { orderMessage, points, whatsappLink, type Perfume } from "@/data/site";
 import { WhatsAppIcon } from "./icons";
+import { Price } from "./price";
 import { AddToBag, Qty } from "./bag";
 
 /** Quantity, add to bag, direct WhatsApp order — plus a sticky bar on phones while this panel is off screen. */
@@ -24,11 +25,11 @@ export function Purchase({ perfume }: { perfume: Perfume }) {
 
   return (
     <>
-      <div ref={ref} className="border border-gold/20 bg-espresso/70 p-6 sm:p-8">
+      <div ref={ref} className="glass p-6 sm:p-8">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <p className="text-sm text-champagne/55">السعر · {perfume.size} مل</p>
-            <p className="mt-1 font-latin text-4xl text-gold-soft sm:text-5xl">{formatPrice(perfume.price)}</p>
+            <p className="text-sm text-coral">السعر · <span className="text-rose">{perfume.size} مل</span></p>
+            <p className="mt-1"><Price value={perfume.price} className="text-4xl sm:text-5xl" /></p>
           </div>
           <Qty value={qty} onChange={(q) => setQty(Math.max(1, q))} label={perfume.name} />
         </div>
@@ -60,7 +61,7 @@ export function Purchase({ perfume }: { perfume: Perfume }) {
             <p className="truncate font-latin text-base uppercase tracking-[0.1em]" dir="ltr" style={{ textAlign: "right" }}>
               {perfume.name}
             </p>
-            <p className="font-latin text-lg text-gold-soft">{formatPrice(perfume.price)}</p>
+            <Price value={perfume.price} className="text-lg" />
           </div>
           <AddToBag slug={perfume.slug} label="أضف للحقيبة" className="!min-h-12 !px-5" />
         </div>
