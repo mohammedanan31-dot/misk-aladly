@@ -3,14 +3,14 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Fluid background: espresso, wine and antique gold folded together with
- * domain-warped noise. Large, close-up folds that drift slowly; the pointer only
- * leans on the flow and leaves a faint warm light. CSS gradient fallback without WebGL.
+ * Fluid background: molten crimson folds with ember light and drifting glossy
+ * reflections. The pointer leans on the flow and leaves a warm light.
+ * CSS gradient fallback without WebGL.
  */
 const FRAG = `
 precision highp float;
 uniform vec2 uRes; uniform float uTime; uniform vec2 uMouse; uniform float uScroll;
-uniform vec3 uBase; uniform vec3 uWine; uniform vec3 uGold;
+uniform vec3 uBase; uniform vec3 uWine; uniform vec3 uGold; uniform vec3 uEmber;
 float hash(vec2 p){ p=fract(p*vec2(123.34,456.21)); p+=dot(p,p+45.32); return fract(p.x*p.y); }
 float noise(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f);
   return mix(mix(hash(i),hash(i+vec2(1,0)),f.x), mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x), f.y); }
@@ -20,20 +20,23 @@ void main(){
   vec2 p=(gl_FragCoord.xy-.5*uRes)/uRes.y;
   vec2 m=(uMouse-.5)*vec2(uRes.x/uRes.y,1.);
   float d=length(p-m);
-  // big, close folds; the pointer leans on the flow a little
-  vec2 q=p*.5-(p-m)*exp(-d*d*1.6)*.18;
-  q.y+=uScroll*.14;
-  float t=uTime*.022;
-  vec2 w=vec2(fbm(q+vec2(0.,t)), fbm(q+vec2(5.2,-t*1.2)));
-  vec2 r=vec2(fbm(q+1.7*w+vec2(1.7,9.2)+t*.6), fbm(q+1.7*w+vec2(8.3,2.8)-t*.4));
-  float f=fbm(q+1.8*r);
-  vec3 deep=uBase*.55;
-  vec3 col=mix(deep,uBase,smoothstep(.2,.7,f));
-  // wine clouds, then a warm gold light folded through them
-  col=mix(col,uWine,smoothstep(.34,.82,f+.35*r.x-.1)*.92);
-  col=mix(col,uGold,smoothstep(.46,.9,r.y*1.25+f*.35-.16)*.42);
-  col+=uGold*exp(-d*d*3.2)*.12+uWine*exp(-d*d*6.)*.14;
-  col*=1.-dot(uv-.5,uv-.5)*.6;
+  vec2 q=p*.62-(p-m)*exp(-d*d*1.6)*.22;
+  q.y+=uScroll*.18;
+  float t=uTime*.055;
+  // molten crimson: domain-warped folds that keep moving
+  vec2 w=vec2(fbm(q+vec2(0.,t)), fbm(q+vec2(5.2,-t*1.3)));
+  vec2 r=vec2(fbm(q+1.9*w+vec2(1.7,9.2)+t*.7), fbm(q+1.9*w+vec2(8.3,2.8)-t*.5));
+  float f=fbm(q+2.*r);
+  vec3 col=mix(uBase*.6,uBase,smoothstep(.15,.65,f));
+  col=mix(col,uWine,smoothstep(.32,.8,f+.4*r.x-.12)*.95);
+  // ember light pooling in the folds, like light on lacquered silk
+  col=mix(col,uEmber,smoothstep(.55,.95,r.y*1.3+f*.3-.2)*.55);
+  // glossy reflections: soft vertical shafts that shimmer and drift
+  float shaft=fbm(vec2(p.x*4.2+r.x*1.4+t*.8, p.y*.35-t*1.6));
+  float glint=smoothstep(.58,.9,shaft)*(.55+.45*sin(t*7.+p.x*9.));
+  col+=mix(uEmber,uGold,.45)*glint*.32*smoothstep(-.6,.2,-p.y+.1);
+  col+=uGold*exp(-d*d*3.)*.1+uEmber*exp(-d*d*6.)*.12;
+  col*=1.-dot(uv-.5,uv-.5)*.75;
   gl_FragColor=vec4(col,1.);
 }`;
 
@@ -72,9 +75,10 @@ export function FluidBackground() {
     gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
     const U = (n: string) => gl.getUniformLocation(prog, n);
     const uRes = U("uRes"), uTime = U("uTime"), uMouse = U("uMouse"), uScroll = U("uScroll");
-    gl.uniform3fv(U("uBase"), rgb("#2a0507"));
-    gl.uniform3fv(U("uWine"), rgb("#8e1a1e"));
+    gl.uniform3fv(U("uBase"), rgb("#3a060b"));
+    gl.uniform3fv(U("uWine"), rgb("#7a0d13"));
     gl.uniform3fv(U("uGold"), rgb("#C6A15B"));
+    gl.uniform3fv(U("uEmber"), rgb("#b8441f"));
 
     // the noise is soft and the canvas is upscaled, so a third of CSS resolution is plenty
     const resize = () => {
@@ -96,16 +100,9 @@ export function FluidBackground() {
     const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const t0 = performance.now();
     let raf = 0, lastDraw = 0;
-    const covered = () => {
-      // the scroll hero paints its own opaque scene; no need to draw underneath it
-      const st = document.querySelector(".mdh-stage");
-      if (!st) return false;
-      const r = st.getBoundingClientRect();
-      return r.top <= 0 && r.bottom >= innerHeight;
-    };
     const frame = (now: number) => {
       raf = document.hidden ? 0 : requestAnimationFrame(frame);
-      if (now - lastDraw < 33 || covered()) return; // ~30 fps is plenty for a slow fluid
+      if (now - lastDraw < 33) return; // ~30 fps is plenty for a slow fluid
       lastDraw = now;
       mouse.x += (target.x - mouse.x) * 0.04;
       mouse.y += (target.y - mouse.y) * 0.04;

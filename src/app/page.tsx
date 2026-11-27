@@ -1,10 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { contact, faqs, formatPrice, genderLabel, perfumes, points, shipping, whatsappLink } from "@/data/site";
-import MiskDiveHero from "@/components/misk-dive-hero";
-import { BottleCarousel } from "@/components/bottle-carousel";
-import { Stage } from "@/components/stage";
-import { OrderButton } from "@/components/order-button";
+import { contact, faqs, perfumes, points, shipping, whatsappLink } from "@/data/site";
+import { Hero } from "@/components/hero";
+import { Collection } from "@/components/collection";
 import { RevealController } from "@/components/reveal";
 import { WhatsAppIcon } from "@/components/icons";
 
@@ -15,18 +13,19 @@ export default function Home() {
   return (
     <main>
       <RevealController />
-      <MiskDiveHero />
-      <BottleCarousel />
+      <Hero />
 
       {/* ---------- Names rail ---------- */}
-      <div className="overflow-hidden border-y border-gold/15 bg-night/35 py-6" aria-hidden="true">
-        <div className="marquee-track flex w-max items-center gap-12 whitespace-nowrap font-latin text-5xl sm:text-7xl" dir="ltr">
-          {[...perfumes, ...perfumes, ...perfumes, ...perfumes].map((p, i) => (
-            <span key={i} className="flex items-center gap-12">
-              <span className={i % 2 ? "text-outline" : "text-gold"}>{p.name}</span>
-              <span className="text-2xl text-gold/50">✦</span>
-            </span>
-          ))}
+      <div className="names-rail relative overflow-hidden border-y border-gold/12 py-5 sm:py-6" aria-hidden="true">
+        <div className="marquee-track flex w-max items-center whitespace-nowrap font-latin text-[13px] uppercase tracking-[0.55em] text-gold-soft/75 sm:text-[15px]" dir="ltr">
+          {Array.from({ length: 4 }).flatMap((_, k) =>
+            [...perfumes.map((p) => p.name), "Misk Aladly"].map((n, i) => (
+              <span key={`${k}-${i}`} className="flex items-center">
+                <span className={n === "Misk Aladly" ? "text-gold" : ""}>{n}</span>
+                <span className="mx-10 inline-block size-[5px] rotate-45 bg-gold/55 sm:mx-16" />
+              </span>
+            )),
+          )}
         </div>
       </div>
 
@@ -75,76 +74,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------- Collection: four chapters ---------- */}
-      <section id="collection" className="relative pb-10">
-        <div className="mx-auto max-w-7xl px-5 pt-10 sm:px-10">
-          <div className="reveal flex flex-col items-start justify-between gap-6 border-b border-gold/15 pb-10 sm:flex-row sm:items-end">
-            <div>
-              <span className="eyebrow">المجموعة</span>
-              <h2 className="mt-6 font-display text-6xl leading-[1.3] sm:text-8xl">
-                لكل عطرٍ <span className="text-gold">حكاية</span>
-              </h2>
-            </div>
-            <p className="max-w-sm leading-8 text-champagne/60">عطران رجاليان وعطران نسائيان، بحجم 100 مل. لكل عطر مزاجه وحكايته.</p>
-          </div>
-        </div>
-
-        {perfumes.map((p, i) => {
-          const flip = i % 2 === 1;
-          return (
-            <article
-              key={p.slug}
-              id={p.slug}
-              className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 py-16 sm:px-10 sm:py-20 lg:grid-cols-2 lg:gap-20"
-            >
-              <div
-                className="pointer-events-none absolute inset-0 -z-0 opacity-50 blur-3xl"
-                style={{ background: `radial-gradient(40% 50% at ${flip ? "70%" : "30%"} 50%, ${p.glow}, transparent 70%)` }}
-              />
-              <Link href={`/perfume/${p.slug}`} className={`reveal bezel group relative block ${flip ? "lg:order-2" : ""}`} aria-label={`${p.name} — التفاصيل`}>
-                <div className="bezel-core">
-                  <Stage perfume={p} className="aspect-[56/75] transition-transform duration-[1400ms] ease-[var(--ease-silk)] group-hover:scale-[1.02]" priority={i === 0} />
-                </div>
-                <span className="absolute end-6 top-6 rounded-full bg-night/60 px-3 py-1 text-xs text-gold-soft backdrop-blur-md">
-                  {genderLabel[p.gender]}
-                </span>
-              </Link>
-
-              <div className={`reveal relative ${flip ? "lg:order-1" : ""}`}>
-                <p className="text-outline font-latin text-8xl leading-none sm:text-9xl" dir="ltr" style={{ textAlign: "right" }}>
-                  0{i + 1}
-                </p>
-                <p className="mt-6 text-sm tracking-[0.3em] text-gold/80">{p.mood}</p>
-                <h3 className="mt-3 font-latin text-6xl leading-none text-champagne sm:text-8xl" dir="ltr" style={{ textAlign: "right" }}>
-                  {p.nameParts[0]}
-                  <em className="text-gold">{p.nameParts[1]}</em>
-                </h3>
-                <p className="mt-6 font-display text-2xl text-gold-soft">{p.short}</p>
-                <p className="mt-4 max-w-md leading-8 text-champagne/70">{p.description}</p>
-
-                <div className="mt-8 flex flex-wrap gap-2">
-                  {p.notes.map((n) => (
-                    <span key={n} className="rounded-full border border-champagne/15 bg-champagne/[0.04] px-4 py-1.5 text-sm text-champagne/85">
-                      {n}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-5">
-                  <div>
-                    <p className="text-xs text-champagne/45">{p.size} مل</p>
-                    <p className="font-latin text-4xl text-gold">{formatPrice(p.price)}</p>
-                  </div>
-                  <OrderButton perfume={p} />
-                  <Link href={`/perfume/${p.slug}`} className="btn-glass rounded-full px-5 py-3 text-sm">
-                    التفاصيل
-                  </Link>
-                </div>
-              </div>
-            </article>
-          );
-        })}
-      </section>
+      <Collection />
 
       {/* ---------- Golden hour lookbook ---------- */}
       <section className="py-24 sm:py-32">
@@ -186,12 +116,12 @@ export default function Home() {
         <div className="sm:absolute sm:inset-y-0 sm:start-0 sm:w-[40%]">
           <div className="reveal flex h-full flex-col justify-end px-6 pb-12 pt-2 sm:px-12 sm:pb-[6%] sm:pt-0">
             <span className="text-xs tracking-[0.3em] text-[#7a1418]">ثبات يدوم</span>
-            <h2 className="mt-4 font-display text-4xl leading-[1.45] text-[#2a0507] sm:text-5xl">
+            <h2 className="mt-4 font-display text-4xl leading-[1.45] text-[#2b0509] sm:text-5xl">
               رذاذٌ واحد
               <br />
               يكفي ليتذكّرك الجميع
             </h2>
-            <p className="mt-4 max-w-sm leading-8 text-[#2a0507]/75">تركيبات مستوردة بتركيز عالٍ، تدوم لساعات طويلة وتترك أثرًا يُلاحظ.</p>
+            <p className="mt-4 max-w-sm leading-8 text-[#2b0509]/75">تركيبات مستوردة بتركيز عالٍ، تدوم لساعات طويلة وتترك أثرًا يُلاحظ.</p>
           </div>
         </div>
       </section>
@@ -305,8 +235,7 @@ export default function Home() {
       {/* ---------- Final call ---------- */}
       <section id="contact" className="px-3 pb-3 sm:px-5 sm:pb-5">
         <div className="grow-in relative isolate overflow-hidden rounded-[2rem] bg-burgundy px-6 py-24 text-center sm:py-32">
-          <Image src="/scenes/hero-stage.webp" alt="" fill sizes="100vw" className="-z-10 object-cover opacity-35" />
-          <div className="absolute inset-0 -z-10 bg-gradient-to-b from-burgundy/40 via-burgundy/70 to-night/90" />
+          <div className="hero-glow absolute inset-0 -z-10" aria-hidden="true" />
           <div className="reveal mx-auto max-w-2xl">
             <h2 className="font-display text-5xl leading-[1.4] sm:text-7xl">
               اختر <span className="text-gold">توقيعك</span>

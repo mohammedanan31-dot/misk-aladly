@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${p.name} — عطر ${genderLabel[p.gender]}`,
     description: p.description,
-    openGraph: { images: [p.scene] },
+    openGraph: { images: ["/scenes/collection.webp"] },
   };
 }
 
@@ -37,11 +37,11 @@ export default async function PerfumePage({ params }: Props) {
       />
 
       <section className="relative mx-auto grid max-w-7xl gap-10 px-4 pb-20 pt-28 sm:px-10 sm:pt-32 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
-        {/* the scene, sticky on desktop */}
+        {/* the bottle, sticky on desktop */}
         <div className="lg:sticky lg:top-28 lg:self-start">
           <div className="bezel curtain">
             <div className="bezel-core">
-              <Stage perfume={perfume} priority float className="aspect-[56/75]" sizes="(min-width:1024px) 50vw, 100vw" />
+              <Stage perfume={perfume} priority float className="aspect-[4/5]" />
             </div>
           </div>
         </div>
@@ -145,12 +145,7 @@ export default async function PerfumePage({ params }: Props) {
             {others.map((o) => (
               <Link key={o.slug} href={`/perfume/${o.slug}`} className="bezel group block">
                 <div className="bezel-core">
-                  <Stage
-                    perfume={o}
-                    parallax={false}
-                    className="aspect-[56/75] transition-transform duration-[1400ms] ease-[var(--ease-silk)] group-hover:scale-[1.03]"
-                    sizes="(min-width:640px) 33vw, 100vw"
-                  />
+                  <Stage perfume={o} morph={false} className="aspect-[4/5] transition-transform duration-[1400ms] ease-[var(--ease-silk)] group-hover:scale-[1.03]" />
                 </div>
                 <div className="flex items-center justify-between px-4 py-4">
                   <p className="font-latin text-3xl" dir="ltr">
