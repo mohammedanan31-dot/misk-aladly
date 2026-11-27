@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Amiri, Bodoni_Moda, IBM_Plex_Sans_Arabic } from "next/font/google";
+import { Bodoni_Moda, Lateef, Markazi_Text } from "next/font/google";
 import { brand } from "@/data/site";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
@@ -8,10 +8,10 @@ import { FluidBackground } from "@/components/fluid-bg";
 import { MistCursor } from "@/components/mist-cursor";
 import "./globals.css";
 
-// Amiri: classic naskh for headlines; IBM Plex Sans Arabic: clean modern text; Bodoni Moda: couture serif for Latin names
-const sans = IBM_Plex_Sans_Arabic({ subsets: ["arabic", "latin"], weight: ["300", "400", "500", "600"], variable: "--font-text" });
-const display = Amiri({ subsets: ["arabic", "latin"], weight: ["400", "700"], variable: "--font-headline" });
-const latin = Bodoni_Moda({ subsets: ["latin"], style: ["normal", "italic"], variable: "--font-cormorant" });
+// Free stand-ins close to the brand faces: Lateef ≈ Felfel (display), Markazi Text ≈ 29LT Zarid Serif (text)
+const sans = Markazi_Text({ subsets: ["arabic", "latin"], weight: ["400", "500", "600", "700"], variable: "--font-text" });
+const display = Lateef({ subsets: ["arabic", "latin"], weight: ["400", "700"], variable: "--font-headline" });
+const latin = Bodoni_Moda({ subsets: ["latin"], weight: ["400", "500"], style: ["normal", "italic"], variable: "--font-bodoni" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://misk-aladly.vercel.app"),
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#160204",
+  themeColor: "#4A0F24",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Perfume-mist cursor. A fine gold ring follows the pointer; moving it throws a
+ * Perfume-mist trail. Moving the pointer throws a
  * trail of golden droplets and soft vapour that bloom and drift upward. A click
  * (or tap) is an atomiser press: a bright fan of mist.
  * Sprites are pre-rendered once, so each frame is only cheap drawImage calls.
@@ -23,20 +23,18 @@ function sprite(size: number, stops: [number, string][]) {
 
 export function MistCursor() {
   const ref = useRef<HTMLCanvasElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const canvas = ref.current, ring = ringRef.current;
-    if (!canvas || !ring) return;
+    const canvas = ref.current;
+    if (!canvas) return;
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const fine = matchMedia("(pointer: fine)").matches;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const SPRITES = [
       sprite(64, [[0, "rgba(255,244,214,1)"], [0.22, "rgba(246,218,152,.75)"], [0.5, "rgba(214,170,98,.22)"], [1, "rgba(214,170,98,0)"]]),
       sprite(64, [[0, "rgba(255,255,240,1)"], [0.2, "rgba(255,236,196,.7)"], [0.55, "rgba(232,198,128,.18)"], [1, "rgba(232,198,128,0)"]]),
-      sprite(256, [[0, "rgba(250,230,190,.55)"], [0.35, "rgba(220,178,108,.28)"], [0.7, "rgba(138,20,24,.12)"], [1, "rgba(138,20,24,0)"]]),
+      sprite(256, [[0, "rgba(250,230,190,.55)"], [0.35, "rgba(220,178,108,.28)"], [0.7, "rgba(143,41,72,.12)"], [1, "rgba(143,41,72,0)"]]),
     ];
 
     let w = 0, h = 0;
@@ -53,8 +51,6 @@ export function MistCursor() {
     const MAX = 320;
     let last: { x: number; y: number; t: number } | null = null;
     let raf = 0;
-    const ringPos = { x: -100, y: -100 }, ringTarget = { x: -100, y: -100 };
-    let ringScale = 1;
 
     const spray = (x: number, y: number, dx: number, dy: number, amount: number, spread: number, speed: number, puffChance: number) => {
       const ang = Math.atan2(dy, dx);
@@ -78,8 +74,6 @@ export function MistCursor() {
 
     const onMove = (e: PointerEvent) => {
       const now = performance.now();
-      ringTarget.x = e.clientX;
-      ringTarget.y = e.clientY;
       if (last) {
         const dx = e.clientX - last.x, dy = e.clientY - last.y;
         const dist = Math.hypot(dx, dy);
@@ -87,20 +81,14 @@ export function MistCursor() {
           const v = Math.min(dist / Math.max(16, now - last.t), 3);
           spray(e.clientX, e.clientY, dx, dy, Math.min(9, Math.ceil(dist / 7)), 1.2, 0.7 + v * 1.3, 0.16);
         }
-      } else {
-        ringPos.x = e.clientX;
-        ringPos.y = e.clientY;
       }
       last = { x: e.clientX, y: e.clientY, t: now };
-      ring.style.opacity = fine ? "1" : "0";
     };
     const onDown = (e: PointerEvent) => {
-      ringScale = 0.7;
       spray(e.clientX, e.clientY, 0.35, -1, 60, 1.5, 3.6, 0.2);
     };
     const onLeave = () => {
       last = null;
-      ring.style.opacity = "0";
     };
     addEventListener("pointermove", onMove, { passive: true });
     addEventListener("pointerdown", onDown, { passive: true });
@@ -118,11 +106,6 @@ export function MistCursor() {
       prev = now;
       const k = dt / 16.67;
 
-      // ring follows with a little lag; a press pinches it like a spray nozzle
-      ringPos.x += (ringTarget.x - ringPos.x) * Math.min(1, 0.22 * k);
-      ringPos.y += (ringTarget.y - ringPos.y) * Math.min(1, 0.22 * k);
-      ringScale += (1 - ringScale) * Math.min(1, 0.12 * k);
-      ring!.style.transform = `translate3d(${ringPos.x - 18}px,${ringPos.y - 18}px,0) scale(${ringScale.toFixed(3)})`;
 
       ctx!.clearRect(0, 0, w, h);
       ctx!.globalCompositeOperation = "lighter";
@@ -151,8 +134,7 @@ export function MistCursor() {
       }
       ctx!.globalAlpha = 1;
       ctx!.globalCompositeOperation = "source-over";
-      const settling = Math.abs(ringTarget.x - ringPos.x) + Math.abs(ringTarget.y - ringPos.y) > 0.5 || Math.abs(1 - ringScale) > 0.01;
-      raf = drops.length || settling ? requestAnimationFrame(tick) : 0;
+      raf = drops.length ? requestAnimationFrame(tick) : 0;
     }
     const onAnyMove = () => kick();
     addEventListener("pointermove", onAnyMove, { passive: true });
@@ -170,11 +152,6 @@ export function MistCursor() {
   return (
     <>
       <canvas ref={ref} aria-hidden="true" className="pointer-events-none fixed inset-0 z-[45] h-full w-full" />
-      <div
-        ref={ringRef}
-        aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[46] size-9 rounded-full border border-gold-soft/70 opacity-0 shadow-[0_0_18px_rgba(198,161,91,0.45),inset_0_0_10px_rgba(198,161,91,0.25)] transition-opacity duration-500"
-      />
     </>
   );
 }

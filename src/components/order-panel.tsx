@@ -43,10 +43,10 @@ export function OrderPanel({ perfume }: { perfume: Perfume }) {
         href={whatsappLink(orderMessage(perfume, qty))}
         target="_blank"
         rel="noopener noreferrer"
-        className="btn-gold flex w-full items-center justify-center gap-3 rounded-full px-8 py-4 text-base font-bold"
+        className="btn-gold w-full justify-center px-8 py-4 text-lg"
       >
-        <WhatsAppIcon className="size-5" />
         اطلب عبر واتساب
+        <WhatsAppIcon className="size-5" />
       </a>
 
       <p className="text-center text-xs text-champagne/50">

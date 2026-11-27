@@ -5,7 +5,7 @@ import { useEffect } from "react";
 /** Adds `.is-visible` to every `.reveal` element as it scrolls into view. */
 export function RevealController() {
   useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>(".reveal:not(.is-visible)");
+    const els = document.querySelectorAll<HTMLElement>(".reveal:not(.is-visible), .reveal-img:not(.is-visible)");
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
